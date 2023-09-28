@@ -5,6 +5,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from matplotlib.patches import Patch
+import seaborn as sns
 
 # Internal dependencies
 from TutorialBlackjackAgent import BlackjackAgent
@@ -167,3 +168,10 @@ def create_plots(value_grid, policy_grid, title: str):
 value_grid, policy_grid = create_grids(agent, usable_ace=True)
 fig1 = create_plots(value_grid, policy_grid, title="With usable ace")
 plt.show()
+
+# state values & policy without usable ace (ace counts as 1)
+value_grid, policy_grid = create_grids(agent, usable_ace=False)
+fig2 = create_plots(value_grid, policy_grid, title="Without usable ace")
+plt.show()
+
+env.close()
