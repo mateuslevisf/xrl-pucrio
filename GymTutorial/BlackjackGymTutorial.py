@@ -8,7 +8,7 @@ from matplotlib.patches import Patch
 import seaborn as sns
 
 # Internal dependencies
-from TutorialBlackjackAgent import BlackjackAgent
+from GymTutorial.TutorialBlackjackAgent import BlackjackAgent
 
 # Adapted from https://gymnasium.farama.org/tutorials/training_agents/blackjack_tutorial/#sphx-glr-tutorials-training-agents-blackjack-tutorial-py
 

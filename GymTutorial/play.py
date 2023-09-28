@@ -7,6 +7,7 @@
 # play.play(env, fps=10, zoom=1, callback=None, keys_to_action=None)
 
 import gymnasium as gym
+import numpy as np
 from gymnasium.utils.play import play
 play(gym.make("CarRacing-v2", render_mode="rgb_array"), keys_to_action={  
                                                "w": np.array([0, 0.7, 0]),
