@@ -12,6 +12,7 @@ class BeliefMapBlackjackAgent:
         epsilon_decay: float,
         final_epsilon: float,
         action_space: gym.Space,
+        observation_space: gym.Space,
         discount_factor: float = 0.95
     ):
         """Initialize a Reinforcement Learning agent with an empty dictionary
@@ -23,12 +24,16 @@ class BeliefMapBlackjackAgent:
             epsilon_decay: The decay for epsilon
             final_epsilon: The final epsilon value
             num_actions: The number of available actions in the environment
+            action_space: The action space of the environment
+            observation_space: The observation space of the environment
             discount_factor: The discount factor for computing the Q-value
         """
-        self.q_values = defaultdict(lambda: np.zeros(action_space.n))
+        n_obs = tuple(map(lambda x: x.n, observation_space))
+        q_shape = n_obs + (action_space.n, )
+        self.q_values = np.zeros(shape = q_shape)
         # the matrix H/the h values correspond to the "belief map" from the WDYTWH paper
         # we will learn this map of discounted expected states concurrently with the Q values
-        self.h_values = defaultdict(lambda: np.zeros(action_space.n))
+        self.h_values = np.zeros(self.q_values.shape)
 
         self.lr = learning_rate
         self.discount_factor = discount_factor
@@ -60,32 +65,26 @@ class BeliefMapBlackjackAgent:
         reward: float,
         terminated: bool,
         next_obs: tuple[int, int, bool],
-    ):
+    ):  
         """Updates the Q-value and H-value of an action."""
         # Updating Q values
-        print("qvalue before", self.q_values[obs][action])
-        future_q_value = (not terminated) * np.max(self.q_values[next_obs])
+        # print("qvalue before", self.q_values[obs][action])
+        # action that maximizes the q value of the next state
+        argmax_a = np.argmax(self.q_values[next_obs])
+        future_q_value = (not terminated) * argmax_a
         expected_reward = (
             reward + self.discount_factor * future_q_value - self.q_values[obs][action]
         )
-
-        self.q_values[obs][action] = (
-            self.q_values[obs][action] + self.lr * expected_reward
-        )
-        print("qvalue after", self.q_values[obs][action])
+        self.q_values[obs + (action,)] += self.lr * expected_reward
+        # print("qvalue after", self.q_values[obs][action])
 
         # Updating H values
-        print("hvalue before", self.h_values[obs][action])
-        intent_update = defaultdict(lambda: np.zeros(self.action_space.n))
-        intent_update[obs][action] = 1
-        future_h_value = (not terminated) * np.max(self.h_values[next_obs][np.argmax(self.q_values[next_obs])])
-        expected_intent = (
-            intent_update + self.discount_factor * future_h_value - self.h_values[obs][action]
-        )
-        self.h_values[obs][action] = (
-            self.h_values[obs][action] + self.lr * expected_intent
-        )
-        print("hvalue after", self.h_values[obs][action])
+        # h_update = np.zeros(self.h_values.shape)
+        # h_update[obs + (action, )] += 1
+        h_update = 1
+        future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
+        expected_h = 1 + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
+        self.h_values[obs + (action,)] += self.lr * expected_h
 
         self.training_error.append(expected_reward)
 

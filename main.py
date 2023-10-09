@@ -37,7 +37,7 @@ initial_epsilon = 1.0
 epsilon_decay = initial_epsilon / (num_episodes / 2)
 final_epsilon = 0.1
 
-agent = BeliefMapBlackjackAgent(learning_rate, initial_epsilon, epsilon_decay, final_epsilon, env.action_space)
+agent = BeliefMapBlackjackAgent(learning_rate, initial_epsilon, epsilon_decay, final_epsilon, env.action_space, env.observation_space)
 
 # Training loop
 env = gym.wrappers.RecordEpisodeStatistics(env, deque_size=num_episodes)
