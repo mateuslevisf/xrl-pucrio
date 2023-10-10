@@ -163,6 +163,46 @@ def create_plots(value_grid, policy_grid, title: str):
     ax2.legend(handles=legend_elements, bbox_to_anchor=(1.3, 1))
     return fig
 
+def plot_table_blackjack(data, title, center=None, figsize=(7.5, 12), cmap=None):
+    '''
+    Flatten from 4-D to 2-D and plot all heatmaps.
+    '''
+    TITLE = ['Stick, No Usable Ace', 'Stick, With Usable Ace', 'Hit, No Usable Ace', 'Hit, With Usable Ace']
+    # if contrast:
+    #     cmap = sns.diverging_palette(10, 240, n=128)
+    #     center = 0
+    # else:
+    #     cmap = 'Blues'
+    cmap = 'Blues' if cmap is None else cmap
+
+    # f, ax = plt.subplots(figsize=figsize)
+    nrows = 2
+    ncols = 2
+    f, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(5*ncols, 5*nrows), constrained_layout=True)
+    
+    to_plot = np.split(data, data.shape[-1], axis=-1)
+    to_plot = [np.squeeze(d) for d in to_plot]
+    
+    # breakpoint()
+    to_plot = [np.split(d, d.shape[-1], axis=-1) for d in to_plot]
+    to_plot = [np.squeeze(t) for sub in to_plot for t in sub]
+    # print(to_plot[0].shape)
+    for idx, (ax, plot) in enumerate(zip(axes.flatten(), to_plot)):
+        # print(plot)
+        # ax = sns.heatmap(plot, center=center, linewidth=1, yticklabels=1, cmap=cmap)
+        sns.heatmap(plot, center=center, linewidth=1, yticklabels=1, cmap=cmap, ax=ax, cbar_kws={"fraction": 0.1, "pad": 0.1, "aspect": 40})
+        ax.set_title(TITLE[idx])
+        # States outside this range are unreachable
+        ax.set_ylim(22, 4)
+        ax.set_xlim(1, 11)
+        ax.set_ylabel('Sum of Player Hand')
+        ax.set_xlabel('Dealer Face-up Card')
+        ax.tick_params(labelsize=10)
+
+        cbar = ax.collections[0].colorbar
+        cbar.ax.tick_params(labelsize=10)
+    return f
+
 
 # state values & policy with usable ace (ace counts as 11)
 value_grid, policy_grid = create_grids(agent, usable_ace=True)

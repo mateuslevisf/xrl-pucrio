@@ -83,7 +83,7 @@ class BeliefMapBlackjackAgent:
         # h_update[obs + (action, )] += 1
         h_update = 1
         future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
-        expected_h = 1 + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
+        expected_h = h_update + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
         self.h_values[obs + (action,)] += self.lr * expected_h
 
         self.training_error.append(expected_reward)
