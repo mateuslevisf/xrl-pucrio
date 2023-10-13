@@ -68,19 +68,21 @@ class BeliefMapBlackjackAgent:
     ):  
         """Updates the Q-value and H-value of an action."""
         # Updating Q values
-        # print("qvalue before", self.q_values[obs][action])
-        # action that maximizes the q value of the next state
+
+        # argmax_a is the action that maximizes the q value of the next state (not the current one)
         argmax_a = np.argmax(self.q_values[next_obs])
         future_q_value = (not terminated) * argmax_a
         expected_reward = (
             reward + self.discount_factor * future_q_value - self.q_values[obs][action]
         )
         self.q_values[obs + (action,)] += self.lr * expected_reward
-        # print("qvalue after", self.q_values[obs][action])
 
         # Updating H values
+
+        # below code is closer to the WDYTWH paper but it doesn't really make sense to me
         # h_update = np.zeros(self.h_values.shape)
         # h_update[obs + (action, )] += 1
+
         h_update = 1
         future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
         expected_h = h_update + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
