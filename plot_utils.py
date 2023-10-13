@@ -133,6 +133,7 @@ def plot_table_blackjack(data, center=None, figsize=(7.5, 12), cmap=None):
     nrows = 2
     ncols = 2
     f, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(5*ncols, 5*nrows), constrained_layout=True)
+    f.suptitle("Q-Values", fontsize=16)
     
     to_plot = np.split(data, data.shape[-1], axis=-1)
     to_plot = [np.squeeze(d) for d in to_plot]
