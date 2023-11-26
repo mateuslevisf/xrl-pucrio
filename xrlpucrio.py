@@ -4,7 +4,7 @@ import argparse
 from helpers import log, set_should_print
 from blackjack import run_blackjack
 
-parser = argparse.ArgumentParser(prog='xrlpucrio', 
+parser = argparse.ArgumentParser(
     description='Test XRL techniques on different environments.')
 parser.add_argument('-t', '--technique', dest='technique', type=str, help='The XRL technique to be tested.', 
     default='hvalues', choices=['hvalues', 'viper'])
