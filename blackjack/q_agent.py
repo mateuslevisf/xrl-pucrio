@@ -3,8 +3,9 @@
 from collections import defaultdict
 import numpy as np
 import gymnasium as gym
+from blackjack.agent import BlackjackAgent
 
-class BlackjackQAgent:
+class QAgent(BlackjackAgent):
     def __init__(
         self,
         learning_rate: float,

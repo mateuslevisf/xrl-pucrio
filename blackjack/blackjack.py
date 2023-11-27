@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Internal dependencies
-from blackjack.q_agent import BlackjackQAgent
+from blackjack.q_agent import QAgent
 from plot_utils import create_grids, create_plots, plot_table_blackjack, plot_error
 from helpers import log
 
@@ -33,7 +33,7 @@ def run_blackjack(should_print=False):
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = 0.1
 
-    agent = BlackjackQAgent(learning_rate, initial_epsilon, epsilon_decay, final_epsilon, env.action_space, env.observation_space)
+    agent = QAgent(learning_rate, initial_epsilon, epsilon_decay, final_epsilon, env.action_space, env.observation_space)
 
     # Training loop
     env = gym.wrappers.RecordEpisodeStatistics(env, deque_size=num_episodes)
