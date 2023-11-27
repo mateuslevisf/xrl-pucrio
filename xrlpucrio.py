@@ -1,7 +1,7 @@
 import sys
 import argparse
 
-from utils import log, set_should_print
+from utils.log import log, set_should_print
 from blackjack.blackjack import run_blackjack
 
 parser = argparse.ArgumentParser(
