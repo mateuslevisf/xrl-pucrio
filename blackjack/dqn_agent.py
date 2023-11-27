@@ -37,9 +37,6 @@ class DQNAgent(QAgent):
 
         self.tau = target_update
         self.batch_size = batch_size
-    
-    def get_action(self, obs: tuple[int, int, bool]) -> int:
-        return super().get_action(obs)
 
     def update(
         self,
@@ -51,5 +48,9 @@ class DQNAgent(QAgent):
     ):  
         super().update(obs, action, reward, terminated, next_obs)
 
-    def decay_epsilon(self):
-        return super().decay_epsilon()
+    # Override the QAgent's select_action_from_policy method
+    def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:
+        """Select an action through the policy network."""
+        with torch.no_grad():
+            print("selected:", self.policy_net(torch.tensor(obs, dtype=torch.float32)).argmax().item())
+            return self.policy_net(torch.tensor(obs, dtype=torch.float32)).argmax().item()

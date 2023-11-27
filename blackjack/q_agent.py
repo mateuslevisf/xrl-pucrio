@@ -6,6 +6,8 @@ import gymnasium as gym
 from blackjack.agent import BlackjackAgent
 
 class QAgent(BlackjackAgent):
+
+    # BlackjackAgent methods
     def __init__(
         self,
         learning_rate: float,
@@ -17,7 +19,7 @@ class QAgent(BlackjackAgent):
         discount_factor: float = 0.95,
         with_h_values: bool = True,
     ):
-        """Initialize a Reinforcement Learning agent with an empty dictionary
+        """Initialize a Reinforcement Learning (Q-Learning) agent with an empty dictionary
         of state-action values (q_values), a learning rate and an epsilon.
 
         Args:
@@ -57,11 +59,11 @@ class QAgent(BlackjackAgent):
         """
         # with probability epsilon return a random action to explore the environment
         if np.random.random() < self.epsilon:
-            return self.action_space.sample()
+            self.select_random_action()
 
         # with probability (1 - epsilon) act greedily (exploit)
         else:
-            return int(np.argmax(self.q_values[obs]))
+            self.select_action_from_policy(obs)
 
     def update(
         self,
@@ -96,5 +98,16 @@ class QAgent(BlackjackAgent):
 
         self.training_error.append(expected_reward)
 
+    # QAgent methods
+
     def decay_epsilon(self):
+        """Decays epsilon by multiplying it with a decay factor."""
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
+
+    def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:
+        """Returns the best action according to the learned policy."""
+        return int(np.argmax(self.q_values[obs]))
+
+    def select_random_action(self) -> int:
+        """Returns a random action."""
+        return self.action_space.sample()
