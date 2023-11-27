@@ -2,7 +2,7 @@ import sys
 import argparse
 
 from helpers import log, set_should_print
-from blackjack import run_blackjack
+from blackjack.blackjack import run_blackjack
 
 parser = argparse.ArgumentParser(
     description='Test XRL techniques on different environments.')
