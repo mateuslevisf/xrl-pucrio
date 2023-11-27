@@ -4,7 +4,7 @@ from collections import defaultdict
 import numpy as np
 import gymnasium as gym
 
-class BeliefMapBlackjackAgent:
+class BlackjackQAgent:
     def __init__(
         self,
         learning_rate: float,
@@ -13,7 +13,8 @@ class BeliefMapBlackjackAgent:
         final_epsilon: float,
         action_space: gym.Space,
         observation_space: gym.Space,
-        discount_factor: float = 0.95
+        discount_factor: float = 0.95,
+        with_h_values: bool = True
     ):
         """Initialize a Reinforcement Learning agent with an empty dictionary
         of state-action values (q_values), a learning rate and an epsilon.
@@ -33,7 +34,10 @@ class BeliefMapBlackjackAgent:
         self.q_values = np.zeros(shape = q_shape)
         # the matrix H/the h values correspond to the "belief map" from the WDYTWH paper
         # we will learn this map of discounted expected states concurrently with the Q values
-        self.h_values = np.zeros(self.q_values.shape)
+        if with_h_values:
+            self.h_values = np.zeros(self.q_values.shape)
+        else:
+            self.h_values = None
 
         self.lr = learning_rate
         self.discount_factor = discount_factor
@@ -83,10 +87,11 @@ class BeliefMapBlackjackAgent:
         # h_update = np.zeros(self.h_values.shape)
         # h_update[obs + (action, )] += 1
 
-        h_update = 1
-        future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
-        expected_h = h_update + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
-        self.h_values[obs + (action,)] += self.lr * expected_h
+        if self.h_values is not None:
+            h_update = 1
+            future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
+            expected_h = h_update + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
+            self.h_values[obs + (action,)] += self.lr * expected_h
 
         self.training_error.append(expected_reward)
 
