@@ -9,7 +9,7 @@ import seaborn as sns
 from blackjack.q_agent import QAgent
 from blackjack.dqn_agent import DQNAgent
 from plot_utils import create_grids, create_plots, plot_table_blackjack, plot_error
-from helpers import log
+from utils import log
 
 # Adapted from https://gymnasium.farama.org/tutorials/training_agents/blackjack_tutorial/#sphx-glr-tutorials-training-agents-blackjack-tutorial-py
 
