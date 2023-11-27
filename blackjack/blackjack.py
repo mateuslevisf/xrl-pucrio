@@ -7,6 +7,7 @@ import seaborn as sns
 
 # Internal dependencies
 from blackjack.q_agent import QAgent
+from blackjack.dqn_agent import DQNAgent
 from plot_utils import create_grids, create_plots, plot_table_blackjack, plot_error
 from helpers import log
 
@@ -33,7 +34,7 @@ def run_blackjack(should_print=False):
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = 0.1
 
-    agent = QAgent(
+    agent = DQNAgent(
         learning_rate=learning_rate, 
         initial_epsilon=initial_epsilon, 
         epsilon_decay=epsilon_decay, 

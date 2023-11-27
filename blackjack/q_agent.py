@@ -15,7 +15,7 @@ class QAgent(BlackjackAgent):
         action_space: gym.Space,
         observation_space: gym.Space,
         discount_factor: float = 0.95,
-        with_h_values: bool = True
+        with_h_values: bool = True,
     ):
         """Initialize a Reinforcement Learning agent with an empty dictionary
         of state-action values (q_values), a learning rate and an epsilon.
@@ -28,7 +28,7 @@ class QAgent(BlackjackAgent):
             num_actions: The number of available actions in the environment
             action_space: The action space of the environment
             observation_space: The observation space of the environment
-            discount_factor: The discount factor for computing the Q-value
+            discount_factor: The discount factor for computing the Q-value (gamma)
         """
         n_obs = tuple(map(lambda x: x.n, observation_space))
         q_shape = n_obs + (action_space.n, )
