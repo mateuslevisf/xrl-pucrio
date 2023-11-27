@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Internal dependencies
-from blackjack.blackjack_qagent import BlackjackQAgent
+from blackjack.q_agent import BlackjackQAgent
 from plot_utils import create_grids, create_plots, plot_table_blackjack, plot_error
 from helpers import log
 
