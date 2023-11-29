@@ -13,7 +13,7 @@ from utils.log import log
 
 # Adapted from https://gymnasium.farama.org/tutorials/training_agents/blackjack_tutorial/#sphx-glr-tutorials-training-agents-blackjack-tutorial-py
 
-def run_blackjack(should_print=False):
+def run_blackjack(should_print=False, deep=False):
     global log
     # Make Blackjack environment.
     # 'sab' parameter defines environment following Sutton and Barton's book rules.
@@ -34,22 +34,30 @@ def run_blackjack(should_print=False):
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = 0.1
 
-    agent = DQNAgent(
-        learning_rate=learning_rate, 
-        initial_epsilon=initial_epsilon, 
-        epsilon_decay=epsilon_decay, 
-        final_epsilon=final_epsilon, 
-        action_space=env.action_space, 
-        observation_space=env.observation_space)
+    params = {
+        "learning_rate": learning_rate,
+        "initial_epsilon": initial_epsilon,
+        "epsilon_decay": epsilon_decay,
+        "final_epsilon": final_epsilon,
+        "action_space": env.action_space,
+        "observation_space": env.observation_space,
+    }
+    if not deep:
+        log("Using Q-learning agent")
+        agent = QAgent(**params)
+    else:
+        log("Using DQN agent")
+        agent = DQNAgent(**params)
 
     # Training loop
     env = gym.wrappers.RecordEpisodeStatistics(env, deque_size=num_episodes)
     for episode in tqdm(range(num_episodes)):
-        obs, info = env.reset()
+        obs, _ = env.reset()
         done = False
 
         while not done:
             action = agent.get_action(obs)
+            # log("Action: {} in Episode: {}".format(action, episode))
             next_obs, reward, terminated, truncated, info = env.step(action)
 
             # Update agent

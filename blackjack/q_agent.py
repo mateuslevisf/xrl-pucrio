@@ -56,14 +56,17 @@ class QAgent(BlackjackAgent):
         """
         Returns the best action with probability (1 - epsilon)
         otherwise a random action with probability epsilon to ensure exploration.
+        Should always be an index of the action space.
         """
+        chosen_action = None
         # with probability epsilon return a random action to explore the environment
         if np.random.random() < self.epsilon:
-            self.select_random_action()
+            chosen_action = self.select_random_action()
 
         # with probability (1 - epsilon) act greedily (exploit)
         else:
-            self.select_action_from_policy(obs)
+            chosen_action = self.select_action_from_policy(obs)
+        return chosen_action
 
     def update(
         self,

@@ -26,7 +26,7 @@ def main():
     technique = args.technique
 
     if environment == 'blackjack' and technique == 'hvalues':
-        run_blackjack()
+        run_blackjack(deep=args.deep)
     else:
         log("Invalid combination of environment and technique.")
         sys.exit(1)
