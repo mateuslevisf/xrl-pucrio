@@ -21,7 +21,7 @@ def run_blackjack(should_print=False, deep=False):
 
     # We reset the environment. Done will be used to check if the game is over later;
     done = False
-    observation, info = env.reset()
+    observation, _ = env.reset()
 
     # Observation follows the format: (player's current sum, dealer's face-up card, boolean whether the player has an usable ace)
     # Usable ace = an ace that can be used as 11 without the player going bust.
@@ -29,7 +29,7 @@ def run_blackjack(should_print=False, deep=False):
 
     # Hyperparameters definitions
     learning_rate = 0.01
-    num_episodes = 100_000
+    num_episodes = 100_000 if not deep else 50_000
     initial_epsilon = 1.0
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = 0.1
@@ -84,7 +84,13 @@ def run_blackjack(should_print=False, deep=False):
 
     table_cmap = sns.diverging_palette(10, 240, n=128)
     fig3 = plot_table_blackjack(agent.q_values, center = 0, cmap=table_cmap, title="Q-Values")
-    fig4 = plot_table_blackjack(agent.h_values, center = 0, cmap=table_cmap, title="H-Values")
+    # save fig3
+    plt.savefig("images/blackjack_q_values.png")
+    if not deep:
+        # currently no H-values implementation for DQN
+        fig4 = plot_table_blackjack(agent.h_values, center = 0, cmap=table_cmap, title="H-Values")
+        # save fig4
+        plt.savefig("images/blackjack_h_values.png")
     plt.show()
 
     env.close()
