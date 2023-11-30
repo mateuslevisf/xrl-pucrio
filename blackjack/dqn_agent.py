@@ -53,11 +53,22 @@ class DQNAgent(QAgent):
         if terminated == True:
             next_obs = None
         else:
-            next_obs = torch.tensor(next_obs, device=self.device, dtype=torch.float32)
+            # we unsqueeze the obs tensor to add a dimension.
+            # so if obs shape is (3,) it will become (1, 3)
+            # which facillitates using torch.cat to create batch later
+            next_obs = torch.tensor(next_obs, device=self.device, dtype=torch.float32).unsqueeze(0)
         
-        obs = torch.tensor(obs, device=self.device, dtype=torch.float32)
+        obs = torch.tensor(obs, device=self.device, dtype=torch.float32).unsqueeze(0)
+
         action = torch.tensor(action, device=self.device, dtype=torch.int64)
+        # if action is 0 dimensional tensor, we need to add a dimension
+        if action.dim() == 0:
+            action = action.unsqueeze(0)
+
         reward = torch.tensor(reward, device=self.device, dtype=torch.float32)
+        # if reward is 0 dimensional tensor, we need to add a dimension
+        if reward.dim() == 0:
+            reward = reward.unsqueeze(0)
 
         self.memory.push(obs, action, next_obs, reward)
 
@@ -78,18 +89,25 @@ class DQNAgent(QAgent):
         action_batch = torch.cat(batch.action)
         reward_batch = torch.cat(batch.reward)
 
+        # we need to add a dimension to action_batch and reward_batch
+        # in order for "gather" call to work later
+        action_batch.unsqueeze_(1)
+        
+        # state_action_values returns a tensor of shape (batch_size, n_actions)
+        # so we use the actions chosen by the agent in each batch
+        # to select the corresponding Q values
         state_action_values = self.policy_net(state_batch).gather(1, action_batch)
 
         next_state_values = torch.zeros(self.batch_size, device=self.device)
         with torch.no_grad():
             next_state_values[non_final_mask] = self.target_net(non_final_next_states).max(1).values
+            next_state_values.unsqueeze(1)
         # Compute the expected Q values
         expected_state_action_values = (next_state_values * self.discount_factor) + reward_batch
 
         # Compute Huber loss
         criterion = nn.SmoothL1Loss()
         loss = criterion(state_action_values, expected_state_action_values.unsqueeze(1))
-
         # Optimize the model
         self.optimizer.zero_grad()
         loss.backward()
@@ -109,5 +127,6 @@ class DQNAgent(QAgent):
     def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:
         """Select an action through the policy network."""
         with torch.no_grad():
-            print("selected:", self.policy_net(torch.tensor(obs, dtype=torch.float32)).argmax().item())
+            # we use item() below to convert the tensor to a scalar more easily 
+            # interpretable by other general code
             return self.policy_net(torch.tensor(obs, dtype=torch.float32)).argmax().item()
