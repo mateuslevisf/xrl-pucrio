@@ -8,7 +8,7 @@ import seaborn as sns
 # Internal dependencies
 from blackjack.q_agent import QAgent
 from blackjack.dqn_agent import DQNAgent
-from utils.plot import create_grids, create_plots, plot_table_blackjack, plot_error
+from utils.plot import create_grids, create_plots, plot_table_blackjack, plot_error, line_plot
 from utils.log import log
 
 # Adapted from https://gymnasium.farama.org/tutorials/training_agents/blackjack_tutorial/#sphx-glr-tutorials-training-agents-blackjack-tutorial-py
@@ -80,11 +80,8 @@ def run_blackjack(should_print=False, deep=False, num_episodes=100_000):
             evaluation_results[episode] = agent.evaluate(env, evaluation_duration)
     
     # Plot evaluation results
-    plt.plot(evaluation_results.keys(), evaluation_results.values())
-    plt.title("Evaluation results")
-    plt.xlabel("Episode number")
-    plt.ylabel("Average reward")
-    plt.savefig("images/blackjack_evaluation_results.png")
+    line_plot(evaluation_results.keys(), evaluation_results.values(), title="Evaluation results", xlabel="Episode number", 
+        ylabel="Average reward", save_path="images/blackjack_evaluation_results.png")
 
     plot_error(env, agent)
     plt.savefig("images/blackjack_training_error.png")

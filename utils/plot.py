@@ -4,6 +4,18 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 import seaborn as sns
 
+def line_plot(x, y, title, xlabel, ylabel, save_path=None):
+    """Plot line graph."""
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, y)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    if save_path is not None:
+        plt.savefig(save_path)
+    else:
+        plt.show()
+
 def plot_error(env, agent):
     rolling_length = 500
     fig, axs = plt.subplots(ncols=3)
