@@ -122,6 +122,8 @@ class DQNAgent(QAgent):
             target_net_state_dict[key] = self.tau * policy_net_state_dict[key] + (1 - self.tau) * target_net_state_dict[key]
         self.target_net.load_state_dict(target_net_state_dict)
 
+        self.training_error.append(loss.item())
+
 
     # Override the QAgent's select_action_from_policy method
     def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:

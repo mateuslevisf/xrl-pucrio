@@ -80,7 +80,6 @@ def run_blackjack(should_print=False, deep=False, num_episodes=100_000):
             evaluation_results[episode] = agent.evaluate(env, evaluation_duration)
     
     # Plot evaluation results
-    log("Evaluation results: {}".format(evaluation_results))
     plt.plot(evaluation_results.keys(), evaluation_results.values())
     plt.title("Evaluation results")
     plt.xlabel("Episode number")
