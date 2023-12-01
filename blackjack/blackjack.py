@@ -13,7 +13,7 @@ from utils.log import log
 
 # Adapted from https://gymnasium.farama.org/tutorials/training_agents/blackjack_tutorial/#sphx-glr-tutorials-training-agents-blackjack-tutorial-py
 
-def run_blackjack(should_print=False, deep=False):
+def run_blackjack(should_print=False, deep=False, num_episodes=100_000):
     global log
     # Make Blackjack environment.
     # 'sab' parameter defines environment following Sutton and Barton's book rules.
@@ -27,9 +27,9 @@ def run_blackjack(should_print=False, deep=False):
     # Usable ace = an ace that can be used as 11 without the player going bust.
     log("Initial observation: {}".format(observation))
 
-    # Hyperparameters definitions
+    # Agent hyperparameters definitions
     learning_rate = 0.01
-    num_episodes = 100_000 if not deep else 50_000
+    num_episodes = num_episodes
     initial_epsilon = 1.0
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = 0.1
@@ -48,6 +48,11 @@ def run_blackjack(should_print=False, deep=False):
     else:
         log("Using DQN agent")
         agent = DQNAgent(**params)
+
+    # Execution setup
+    evaluation_interval = num_episodes//10
+    evaluation_duration = num_episodes//100
+    evaluation_results = {}
 
     # Training loop
     env = gym.wrappers.RecordEpisodeStatistics(env, deque_size=num_episodes)
@@ -69,8 +74,21 @@ def run_blackjack(should_print=False, deep=False):
 
         agent.decay_epsilon()
 
-    # plot_error(env, agent)
-    # plt.show()
+        # Evaluate agent
+        if episode % evaluation_interval == 0:
+            # log("Evaluating agent in episode {}".format(episode))
+            evaluation_results[episode] = agent.evaluate(env, evaluation_duration)
+    
+    # Plot evaluation results
+    log("Evaluation results: {}".format(evaluation_results))
+    plt.plot(evaluation_results.keys(), evaluation_results.values())
+    plt.title("Evaluation results")
+    plt.xlabel("Episode number")
+    plt.ylabel("Average reward")
+    plt.savefig("images/blackjack_evaluation_results.png")
+
+    plot_error(env, agent)
+    plt.savefig("images/blackjack_training_error.png")
 
     # # state values & policy with usable ace (ace counts as 11)
     # value_grid, policy_grid = create_grids(agent, usable_ace=True)
@@ -91,6 +109,6 @@ def run_blackjack(should_print=False, deep=False):
         fig4 = plot_table_blackjack(agent.h_values, center = 0, cmap=table_cmap, title="H-Values")
         # save fig4
         plt.savefig("images/blackjack_h_values.png")
-    plt.show()
+    # plt.show()
 
     env.close()

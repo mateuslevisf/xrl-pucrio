@@ -52,20 +52,22 @@ class QAgent(BlackjackAgent):
 
         self.training_error = []
 
-    def get_action(self, obs: tuple[int, int, bool]) -> int:
+    def get_action(self, obs: tuple[int, int, bool], eval: bool = False) -> int:
         """
         Returns the best action with probability (1 - epsilon)
         otherwise a random action with probability epsilon to ensure exploration.
         Should always be an index of the action space.
         """
         chosen_action = None
-        # with probability epsilon return a random action to explore the environment
-        if np.random.random() < self.epsilon:
-            chosen_action = self.select_random_action()
-
         # with probability (1 - epsilon) act greedily (exploit)
-        else:
+        # or if we are evaluating the agent, then he should select
+        # the action that maximizes the q value of the current state
+        if np.random.random() >= self.epsilon or eval:
             chosen_action = self.select_action_from_policy(obs)
+
+        # with probability epsilon return a random action to explore the environment
+        else:
+            chosen_action = self.select_random_action()
         return chosen_action
 
     def update(
