@@ -50,7 +50,7 @@ def run_blackjack(should_print=False, deep=False, num_episodes=100_000):
         agent = DQNAgent(**params)
 
     # Execution setup
-    evaluation_interval = num_episodes//5
+    evaluation_interval = 1000
     evaluation_duration = num_episodes//100
     evaluation_results = {}
 
