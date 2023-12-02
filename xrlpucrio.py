@@ -62,7 +62,7 @@ def main():
 
     evaluation_results = env.loop(agent, num_episodes, evaluation_interval, evaluation_duration)
 
-    env.generate_plots(agent, evaluation_results, args.deep)
+    env.generate_plots(agent, evaluation_results, deep=args.deep)
 
     env.close()
 

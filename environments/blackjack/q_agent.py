@@ -32,7 +32,6 @@ class QAgent(Agent):
             observation_space: The observation space of the environment
             discount_factor: The discount factor for computing the Q-value (gamma)
         """
-        print("Obs space", observation_space)
         self._observation_type = type(observation_space)
         if self._observation_type == gym.spaces.tuple.Tuple:
             n_obs = tuple(map(lambda x: x.n, observation_space))
