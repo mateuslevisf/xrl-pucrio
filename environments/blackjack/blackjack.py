@@ -1,6 +1,7 @@
 from environments.env_instance import EnvironmentInstance
 from utils.plot import create_grids, create_plots, plot_table_blackjack
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 class BlackjackEnvironment(EnvironmentInstance):

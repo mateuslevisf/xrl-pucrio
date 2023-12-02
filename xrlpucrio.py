@@ -2,8 +2,7 @@ import sys
 import argparse
 
 from utils.log import log, set_should_print, show_running_info
-from environments.blackjack.blackjack import run_blackjack
-from environments.blackjack.blackjack_env import BlackjackEnvironment
+from environments.blackjack.blackjack import BlackjackEnvironment
 
 from environments.blackjack.q_agent import QAgent
 from environments.blackjack.dqn_agent import DQNAgent
