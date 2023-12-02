@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Internal dependencies
-from blackjack.q_agent import QAgent
-from blackjack.dqn_agent import DQNAgent
+from environments.blackjack.q_agent import QAgent
+from environments.blackjack.dqn_agent import DQNAgent
 from utils.plot import create_grids, create_plots, plot_table_blackjack, plot_error, line_plot
 from utils.log import log
 

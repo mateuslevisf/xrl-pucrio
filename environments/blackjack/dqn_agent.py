@@ -5,11 +5,13 @@ from copy import deepcopy
 import torch
 import torch.nn as nn
 
-from blackjack.q_agent import QAgent
+from environments.blackjack.q_agent import QAgent
 from networks.dqn import DQN
 from utils.memory import ReplayMemory, Transition
 
 class DQNAgent(QAgent):
+
+    # Agent methods
     def __init__(self, 
         learning_rate: float,
         initial_epsilon: float,

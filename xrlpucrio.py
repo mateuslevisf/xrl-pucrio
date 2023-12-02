@@ -2,7 +2,7 @@ import sys
 import argparse
 
 from utils.log import log, set_should_print, show_running_info
-from blackjack.blackjack import run_blackjack
+from environments.blackjack.blackjack import run_blackjack
 
 parser = argparse.ArgumentParser(
     description='Test XRL techniques on different environments.')

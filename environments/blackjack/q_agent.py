@@ -3,11 +3,11 @@
 from collections import defaultdict
 import numpy as np
 import gymnasium as gym
-from blackjack.agent import BlackjackAgent
+from environments.agent import Agent
 
-class QAgent(BlackjackAgent):
+class QAgent(Agent):
 
-    # BlackjackAgent methods
+    # Agent methods
     def __init__(
         self,
         learning_rate: float,
