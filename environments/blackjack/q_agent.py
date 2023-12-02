@@ -32,8 +32,18 @@ class QAgent(Agent):
             observation_space: The observation space of the environment
             discount_factor: The discount factor for computing the Q-value (gamma)
         """
-        n_obs = tuple(map(lambda x: x.n, observation_space))
-        q_shape = n_obs + (action_space.n, )
+        print("Obs space", observation_space)
+        self._observation_type = type(observation_space)
+        if self._observation_type == gym.spaces.tuple.Tuple:
+            n_obs = tuple(map(lambda x: x.n, observation_space))
+            q_shape = n_obs + (action_space.n, )
+        elif self._observation_type == gym.spaces.discrete.Discrete:
+            n_obs = observation_space.n
+            #in this case, shape should be something like (n_obs, action_space.n)
+            q_shape = (n_obs, action_space.n)
+        else:
+            raise ValueError("QAgent implementation only supports Discrete and Tuple observation spaces")
+
         self.q_values = np.zeros(shape = q_shape)
         # the matrix H/the h values correspond to the "belief map" from the WDYTWH paper
         # we will learn this map of discounted expected states concurrently with the Q values
@@ -87,7 +97,14 @@ class QAgent(Agent):
         expected_reward = (
             reward + self.discount_factor * future_q_value - self.q_values[obs][action]
         )
-        self.q_values[obs + (action,)] += self.lr * expected_reward
+
+        q_values_update = self.lr * expected_reward
+        if self._observation_type == gym.spaces.tuple.Tuple:
+            index = obs + (action, )
+            self.q_values[index] += q_values_update
+        else:
+            # obs space is discrete
+            self.q_values[obs][action] += q_values_update
 
         # Updating H values
 
@@ -97,9 +114,15 @@ class QAgent(Agent):
 
         if self.h_values is not None:
             h_update = 1
-            future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
-            expected_h = h_update + self.discount_factor * future_h_value- self.h_values[obs + (action, )]
-            self.h_values[obs + (action,)] += self.lr * expected_h
+            if self._observation_type == gym.spaces.tuple.Tuple:
+                future_h_value = (not terminated) * self.h_values[next_obs + (argmax_a, )]
+                expected_h = h_update + self.discount_factor * future_h_value - self.h_values[obs + (action, )]
+                self.h_values[index] += self.lr * expected_h
+            else:
+                # obs space is discrete
+                future_h_value = (not terminated) * self.h_values[next_obs][argmax_a]
+                expected_h = h_update + self.discount_factor * future_h_value - self.h_values[obs][action]
+                self.h_values[obs][action] += self.lr * expected_h
 
         self.training_error.append(expected_reward)
 

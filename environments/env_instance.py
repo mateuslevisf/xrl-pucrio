@@ -17,12 +17,14 @@ class EnvironmentInstance:
         """Resets the environment and returns the initial observation."""
         return self._instance.reset()
 
-    def loop(self, agent, num_episodes, evaluation_interval, evaluation_duration):
+    def loop(self, agent, num_episodes, evaluation_interval, evaluation_duration, already_wrapped=False):
         """Executes the training loop for the given agent and number of episodes.
             Returns a dictionary with the evaluation results."""
         evaluation_results = {}
 
-        self._instance = gym.wrappers.RecordEpisodeStatistics(self._instance, deque_size=num_episodes)
+        if not already_wrapped:
+            self._instance = gym.wrappers.RecordEpisodeStatistics(self._instance, deque_size=num_episodes)
+            
         for episode in tqdm(range(num_episodes)):
             obs, _ = self._instance.reset()
             done = False
