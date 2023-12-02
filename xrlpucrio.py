@@ -1,10 +1,15 @@
+# General imports
 import sys
 
+# Importing util functions
 from utils.arg_parser import parser
-
 from utils.log import log, set_should_print, show_running_info
-from environments.blackjack.blackjack import BlackjackEnvironment
 
+# Importing own environments
+from environments.blackjack.blackjack import BlackjackEnvironment
+from environments.cartpole.cartpole import CartpoleEnvironment
+
+# Importing own agents
 from environments.blackjack.q_agent import QAgent
 from environments.blackjack.dqn_agent import DQNAgent
 
@@ -17,8 +22,10 @@ def main():
     environment = args.environment
     technique = args.technique
 
-    if environment == 'blackjack' and technique == 'hvalues':
+    if environment == 'blackjack':
         env = BlackjackEnvironment(sab=True)
+    elif environment == 'cartpole':
+        env = CartpoleEnvironment()
     else:
         log("Invalid combination of environment and technique.")
         sys.exit(1)

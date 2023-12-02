@@ -1,3 +1,5 @@
+# This file contains the argument parser for the main.py file.
+# All possible arguments and default values are defined here.
 import argparse
 
 parser = argparse.ArgumentParser(
