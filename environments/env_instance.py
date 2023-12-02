@@ -1,6 +1,6 @@
 import gymnasium as gym
 from tqdm import tqdm
-from utils.plot import plot_error, line_plot
+from utils.plots import plot_error, line_plot
 from utils.log import log
 import matplotlib.pyplot as plt
 

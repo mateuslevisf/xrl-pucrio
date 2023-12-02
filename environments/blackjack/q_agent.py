@@ -23,7 +23,7 @@ class QAgent(Agent):
         of state-action values (q_values), a learning rate and an epsilon.
 
         Args:
-            learning_rate: The learning rate
+            learning_rate: The learning rate (alpha)
             initial_epsilon: The initial epsilon value
             epsilon_decay: The decay for epsilon
             final_epsilon: The final epsilon value

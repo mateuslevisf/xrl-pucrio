@@ -2,7 +2,7 @@
 import sys
 
 # Importing util functions
-from utils.arg_parser import parser
+from utils.arguments_parser import parser
 from utils.log import log, set_should_print, show_running_info
 
 # Importing own environments
@@ -35,6 +35,14 @@ def main():
 
     # Agent hyperparameters definitions
     learning_rate = 0.01
+    discount_factor = 0.95
+    if environment == 'cartpole':
+        # 0.0001 was bad
+        # 0.1 was bad
+        # 0.01 showed best results until now but 100_000 episodes was too little to stabilize
+        # testing with 1mil -> two peaks at 90 in eval but still not stable
+        learning_rate = 0.01
+        discount_factor = 1
     num_episodes = args.num_episodes
     initial_epsilon = 1.0
     epsilon_decay = initial_epsilon / (num_episodes / 2)
@@ -47,6 +55,7 @@ def main():
         "final_epsilon": final_epsilon,
         "action_space": env_action_space,
         "observation_space": env_observation_space,
+        "discount_factor": discount_factor,
     }
     
     if not args.deep:
@@ -57,8 +66,9 @@ def main():
         agent = DQNAgent(**params)
 
     # Execution setup
-    evaluation_interval = 1000
-    evaluation_duration = num_episodes//100
+    # evaluation_interval = 1000
+    evaluation_interval = num_episodes//50
+    evaluation_duration = 1000
 
     evaluation_results = env.loop(agent, num_episodes, evaluation_interval, evaluation_duration)
 
