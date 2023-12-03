@@ -150,3 +150,11 @@ class DQNAgent(QAgent):
     def load(self, path: str):
         self.policy_net.load_state_dict(torch.load(path))
         self.target_net = deepcopy(self.policy_net)
+
+    def generate_q_table(self, q_shape) -> np.ndarray:
+        """Generate a Q-table from the policy network."""
+        q_table = np.zeros(q_shape)
+        for state in range(q_shape[0]):
+            for action in range(q_shape[1]):
+                q_table[state, action] = self.policy_net(torch.tensor(state, dtype=torch.float32)).max().item()
+        return q_table
