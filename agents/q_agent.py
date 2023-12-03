@@ -31,7 +31,16 @@ class QAgent(Agent):
             action_space: The action space of the environment
             observation_space: The observation space of the environment
             discount_factor: The discount factor for computing the Q-value (gamma)
-        """
+        """   
+        self.init_qlearning_params(
+            learning_rate=learning_rate,
+            initial_epsilon=initial_epsilon,
+            epsilon_decay=epsilon_decay,
+            final_epsilon=final_epsilon,
+            action_space=action_space,
+            discount_factor=discount_factor,
+        )
+
         self._observation_type = type(observation_space)
         if self._observation_type == gym.spaces.tuple.Tuple:
             n_obs = tuple(map(lambda x: x.n, observation_space))
@@ -51,6 +60,17 @@ class QAgent(Agent):
         else:
             self.h_values = None
 
+    def init_qlearning_params(self,
+        learning_rate: float,
+        initial_epsilon: float,
+        epsilon_decay: float,
+        final_epsilon: float,
+        action_space: gym.Space,
+        discount_factor: float = 0.95,
+    ):
+        """Initialize parameters related to general Q-Learning, such as the learning rate, epsilon, etc.
+        Q-values, H-values (if applicable) and observation space are initialized in the constructor
+        since the way they are handled is different between deep/non-deep models."""
         self.lr = learning_rate
         self.discount_factor = discount_factor
 

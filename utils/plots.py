@@ -133,6 +133,7 @@ def plot_table_blackjack(data, center=None, figsize=(7.5, 12), cmap=None, title=
     '''
     Flatten from 4-D to 2-D and plot all heatmaps.
     '''
+    
     TITLE = ['Stick, No Usable Ace', 'Stick, With Usable Ace', 'Hit, No Usable Ace', 'Hit, With Usable Ace']
     # if contrast:
     #     cmap = sns.diverging_palette(10, 240, n=128)

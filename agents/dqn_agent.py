@@ -22,15 +22,16 @@ class DQNAgent(QAgent):
         discount_factor: float = 0.95,
         batch_size: int = 128,
         target_update: float = 0.005,
+        with_h_values: bool = True
     ):
-        super().__init__(learning_rate=learning_rate,
+        super().init_qlearning_params(
+            learning_rate=learning_rate,
             initial_epsilon=initial_epsilon,
             epsilon_decay=epsilon_decay,
             final_epsilon=final_epsilon,
             action_space=action_space,
-            observation_space=observation_space,
-            discount_factor=discount_factor,
-            with_h_values=False)
+            discount_factor=discount_factor
+        )
 
         if type(observation_space) == gym.spaces.discrete.Discrete:
             n_obs = observation_space.n
@@ -42,6 +43,12 @@ class DQNAgent(QAgent):
         self.policy_net = DQN(n_obs, n_actions)
         self.target_net = deepcopy(self.policy_net)
         self.optimizer = torch.optim.Adam(self.policy_net.parameters(), lr=self.lr)
+
+        self.with_h_values = with_h_values
+        if with_h_values:
+            self.belief_policy_net = DQN(n_obs, n_actions)
+            self.belief_target_net = deepcopy(self.belief_policy_net)
+            self.belief_optimizer = torch.optim.Adam(self.belief_policy_net.parameters(), lr=self.lr)
 
         self.tau = target_update
         self.batch_size = batch_size
@@ -129,7 +136,6 @@ class DQNAgent(QAgent):
         self.target_net.load_state_dict(target_net_state_dict)
 
         self.training_error.append(loss.item())
-
 
     # Override the QAgent's select_action_from_policy method
     def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:

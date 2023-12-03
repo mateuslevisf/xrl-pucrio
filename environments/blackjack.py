@@ -23,13 +23,22 @@ class BlackjackEnvironment(EnvironmentInstance):
         # fig2 = create_plots(value_grid, policy_grid, title="Without usable ace")
         # plt.show()
 
+        
+        q_data=None
+        h_data=None
+        if not deep:
+            q_data = agent.q_values
+            h_data = agent.h_values
+        else:
+            raise(NotImplementedError, "H-values plotting for deep learning models not implemented yet.")
+
         table_cmap = sns.diverging_palette(10, 240, n=128)
-        fig3 = plot_table_blackjack(agent.q_values, center = 0, cmap=table_cmap, title="Q-Values")
+        fig3 = plot_table_blackjack(q_data, center = 0, cmap=table_cmap, title="Q-Values")
         # save fig3
         plt.savefig("images/blackjack_q_values.png")
         if not deep:
             # currently no H-values implementation for DQN
-            fig4 = plot_table_blackjack(agent.h_values, center = 0, cmap=table_cmap, title="H-Values")
+            fig4 = plot_table_blackjack(h_data, center = 0, cmap=table_cmap, title="H-Values")
             # save fig4
             plt.savefig("images/blackjack_h_values.png")
         # plt.show()
