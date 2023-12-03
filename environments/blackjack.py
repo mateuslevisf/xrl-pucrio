@@ -29,7 +29,7 @@ class BlackjackEnvironment(EnvironmentInstance):
             q_data = agent.q_values
             h_data = agent.h_values
         else:
-            raise(NotImplementedError)
+            return
 
         table_cmap = sns.diverging_palette(10, 240, n=128)
         fig3 = plot_table_blackjack(q_data, center = 0, cmap=table_cmap, title="Q-Values")
