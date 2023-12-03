@@ -138,3 +138,11 @@ class DQNAgent(QAgent):
             # we use item() below to convert the tensor to a scalar more easily 
             # interpretable by other general code
             return self.policy_net(torch.tensor(obs, dtype=torch.float32)).argmax().item()
+
+    # DQN specific methods
+    def save(self, path: str):
+        torch.save(self.policy_net.state_dict(), path)
+    
+    def load(self, path: str):
+        self.policy_net.load_state_dict(torch.load(path))
+        self.target_net = deepcopy(self.policy_net)
