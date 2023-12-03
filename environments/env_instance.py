@@ -1,8 +1,7 @@
 import gymnasium as gym
 from tqdm import tqdm
-from utils.plots import plot_error, line_plot
-from utils.log import log
-import matplotlib.pyplot as plt
+from utils.plots import line_plot
+import numpy as np
 
 class EnvironmentInstance:
     def __init__(self, name, **kwargs):
@@ -68,12 +67,10 @@ class EnvironmentInstance:
 
         return total_reward / num_episodes
     
-    def generate_plots(self, agent, evaluation_results, **kwargs):
+    def generate_plots(self, evaluation_results, **kwargs):
         """Generates generic plots for the given agent and evaluation results."""
         line_plot(evaluation_results.keys(), evaluation_results.values(), title="Evaluation results", xlabel="Episode number", 
             ylabel="Average reward", save_path="images/{}_evaluation_results.png".format(self.name))
-        # plot_error(self._instance, agent)
-        # plt.savefig("images/{}_training_error.png".format(self.name))
 
     def close(self):
         """Closes the environment."""

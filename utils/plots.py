@@ -6,7 +6,7 @@ import seaborn as sns
 
 def line_plot(x, y, title, xlabel, ylabel, save_path=None):
     """Plot line graph."""
-    plt.figure(figsize=(10, 6))
+    fig = plt.figure(figsize=(10, 6))
     plt.plot(x, y)
     plt.title(title)
     plt.xlabel(xlabel)
@@ -15,52 +15,8 @@ def line_plot(x, y, title, xlabel, ylabel, save_path=None):
         plt.savefig(save_path)
     else:
         plt.show()
-
-def plot_training_results(training_rewards, training_lengths = None, training_errors = None):
-    """Plot training results."""
-    fig, axs = plt.subplots(ncols=3)
-    # set width
-    fig.set_figwidth(15)
-    axs[0].set_title("Episode rewards")
-    axs[0].plot(range(len(training_rewards)), training_rewards)
-    if training_lengths is not None:
-        axs[1].set_title("Episode lengths")
-        axs[1].plot(range(len(training_lengths)), training_lengths)
-    if training_errors is not None:
-        axs[2].set_title("Training Error")
-        axs[2].plot(range(len(training_errors)), training_errors)
-    plt.tight_layout()
-
-def plot_error(env, agent):
-    rolling_length = 500
-    fig, axs = plt.subplots(ncols=3)
-    # set width
-    fig.set_figwidth(15)
-    axs[0].set_title("Episode rewards")
-    # compute and assign a rolling average of the data to provide a smoother graph
-    reward_moving_average = (
-        np.convolve(
-            np.array(env.return_queue).flatten(), np.ones(rolling_length), mode="valid"
-        )
-        / rolling_length
-    )
-    axs[0].plot(range(len(reward_moving_average)), reward_moving_average)
-    axs[1].set_title("Episode lengths")
-    length_moving_average = (
-        np.convolve(
-            np.array(env.length_queue).flatten(), np.ones(rolling_length), mode="same"
-        )
-        / rolling_length
-    )
-    axs[1].plot(range(len(length_moving_average)), length_moving_average)
-    axs[2].set_title("Training Error")
-    training_error_moving_average = (
-        np.convolve(np.array(agent.training_error), np.ones(rolling_length), mode="same")
-        / rolling_length
-    )
-    axs[2].plot(range(len(training_error_moving_average)), training_error_moving_average)
-    plt.tight_layout()
-
+    return fig
+    
 def create_grids(agent, usable_ace=False):
     """Create value and policy grid given an agent."""
     # convert our state-action values to state values

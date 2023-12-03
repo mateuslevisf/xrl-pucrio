@@ -8,10 +8,12 @@ class BlackjackEnvironment(EnvironmentInstance):
     def __init__(self, **kwargs):
         super().__init__("Blackjack-v1", **kwargs)
 
-    def generate_plots(self, agent, evaluation_results, deep=False):
+    def generate_plots(self, evaluation_results, agent, deep=False):
         """Generates plots for the given agent and evaluation results in the Blackjack Environment.
             'deep' is a boolean flag to indicate whether the agent is a DQN agent or not."""
-        super().generate_plots(agent, evaluation_results)
+        if agent is None:
+            raise("Generate plots function for Blackjack environment requires agent to be passed.")
+        super().generate_plots(evaluation_results)
 
         # # state values & policy with usable ace (ace counts as 11)
         # value_grid, policy_grid = create_grids(agent, usable_ace=True)

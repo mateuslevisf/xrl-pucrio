@@ -79,8 +79,6 @@ class QAgent(Agent):
         self.final_epsilon = final_epsilon
         self.action_space = action_space
 
-        self.training_rewards = []
-
     def get_action(self, obs: tuple[int, int, bool], eval: bool = False) -> int:
         """
         Returns the best action with probability (1 - epsilon)
@@ -142,8 +140,6 @@ class QAgent(Agent):
                 future_h_value = (not terminated) * self.h_values[next_obs][argmax_a]
                 expected_h = h_update + self.discount_factor * future_h_value - self.h_values[obs][action]
                 self.h_values[obs][action] += self.lr * expected_h
-
-        self.training_rewards.append(reward)
 
     # QAgent methods
 

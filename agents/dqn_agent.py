@@ -87,8 +87,6 @@ class DQNAgent(QAgent):
 
         self.optimize_model()
 
-        self.training_rewards.append(reward.item())
-
     def optimize_model(self):
         """Perform a single step of the optimization (on the policy and target network)"""
         if len(self.memory) < self.batch_size:
