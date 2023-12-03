@@ -29,6 +29,8 @@ class EnvironmentInstance:
             obs, _ = self._instance.reset()
             done = False
 
+            # print("obs", obs)
+
             while not done:
                 action = agent.get_action(obs)
                 # log("Action: {} in Episode: {}".format(action, episode))

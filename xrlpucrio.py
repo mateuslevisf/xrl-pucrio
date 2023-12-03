@@ -25,7 +25,7 @@ def main():
     if environment == 'blackjack':
         env = BlackjackEnvironment(sab=True)
     elif environment == 'cartpole':
-        env = CartpoleEnvironment()
+        env = CartpoleEnvironment(deep=args.deep)
     else:
         log("Invalid combination of environment and technique.")
         sys.exit(1)
