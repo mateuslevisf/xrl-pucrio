@@ -16,9 +16,26 @@ def line_plot(x, y, title, xlabel, ylabel, save_path=None):
     else:
         plt.show()
 
+def plot_training_results(training_rewards, training_lengths = None, training_errors = None):
+    """Plot training results."""
+    fig, axs = plt.subplots(ncols=3)
+    # set width
+    fig.set_figwidth(15)
+    axs[0].set_title("Episode rewards")
+    axs[0].plot(range(len(training_rewards)), training_rewards)
+    if training_lengths is not None:
+        axs[1].set_title("Episode lengths")
+        axs[1].plot(range(len(training_lengths)), training_lengths)
+    if training_errors is not None:
+        axs[2].set_title("Training Error")
+        axs[2].plot(range(len(training_errors)), training_errors)
+    plt.tight_layout()
+
 def plot_error(env, agent):
     rolling_length = 500
     fig, axs = plt.subplots(ncols=3)
+    # set width
+    fig.set_figwidth(15)
     axs[0].set_title("Episode rewards")
     # compute and assign a rolling average of the data to provide a smoother graph
     reward_moving_average = (

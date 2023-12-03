@@ -72,8 +72,8 @@ class EnvironmentInstance:
         """Generates generic plots for the given agent and evaluation results."""
         line_plot(evaluation_results.keys(), evaluation_results.values(), title="Evaluation results", xlabel="Episode number", 
             ylabel="Average reward", save_path="images/{}_evaluation_results.png".format(self.name))
-        #plot_error(self._instance, agent)
-        #plt.savefig("images/{}_training_error.png".format(self.name))
+        plot_error(self._instance, agent)
+        plt.savefig("images/{}_training_error.png".format(self.name))
 
     def close(self):
         """Closes the environment."""

@@ -87,6 +87,8 @@ class DQNAgent(QAgent):
 
         self.optimize_model()
 
+        self.training_rewards.append(reward.item())
+
     def optimize_model(self):
         """Perform a single step of the optimization (on the policy and target network)"""
         if len(self.memory) < self.batch_size:
@@ -134,8 +136,6 @@ class DQNAgent(QAgent):
         for key in policy_net_state_dict:
             target_net_state_dict[key] = self.tau * policy_net_state_dict[key] + (1 - self.tau) * target_net_state_dict[key]
         self.target_net.load_state_dict(target_net_state_dict)
-
-        self.training_error.append(loss.item())
 
     # Override the QAgent's select_action_from_policy method
     def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:

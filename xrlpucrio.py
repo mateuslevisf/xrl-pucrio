@@ -1,5 +1,7 @@
 # General imports
 import sys
+import os
+import shutil
 
 # Importing util functions
 from utils.arguments_parser import parser
@@ -14,7 +16,14 @@ from agents.q_agent import QAgent
 from agents.dqn_agent import DQNAgent
 
 def main():
+    # first we clean up the images folder
+    folder = 'images'
+    for root, _, files in os.walk(folder):
+        for f in files:
+            os.unlink(os.path.join(root, f))
+
     args = parser.parse_args()
+
 
     set_should_print(args.should_print)
     show_running_info(vars(args))

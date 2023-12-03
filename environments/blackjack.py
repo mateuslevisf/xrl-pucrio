@@ -22,7 +22,6 @@ class BlackjackEnvironment(EnvironmentInstance):
         # value_grid, policy_grid = create_grids(agent, usable_ace=False)
         # fig2 = create_plots(value_grid, policy_grid, title="Without usable ace")
         # plt.show()
-
         
         q_data=None
         h_data=None
