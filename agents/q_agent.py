@@ -3,7 +3,7 @@
 from collections import defaultdict
 import numpy as np
 import gymnasium as gym
-from environments.agent import Agent
+from agents.agent import Agent
 
 class QAgent(Agent):
 

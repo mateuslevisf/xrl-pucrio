@@ -6,12 +6,12 @@ from utils.arguments_parser import parser
 from utils.log import log, set_should_print, show_running_info
 
 # Importing own environments
-from environments.blackjack.blackjack import BlackjackEnvironment
-from environments.cartpole.cartpole import CartpoleEnvironment
+from environments.blackjack import BlackjackEnvironment
+from environments.cartpole import CartpoleEnvironment
 
 # Importing own agents
-from environments.blackjack.q_agent import QAgent
-from environments.blackjack.dqn_agent import DQNAgent
+from agents.q_agent import QAgent
+from agents.dqn_agent import DQNAgent
 
 def main():
     args = parser.parse_args()

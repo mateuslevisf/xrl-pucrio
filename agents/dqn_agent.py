@@ -5,7 +5,7 @@ from copy import deepcopy
 import torch
 import torch.nn as nn
 
-from environments.blackjack.q_agent import QAgent
+from agents.q_agent import QAgent
 from networks.dqn import DQN
 from utils.memory import ReplayMemory, Transition
 
