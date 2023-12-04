@@ -32,7 +32,8 @@ class DQNAgent(QAgent):
             action_space=action_space,
             discount_factor=discount_factor
         )
-
+        self.observation_space = observation_space
+        self.action_space = action_space
         if type(observation_space) == gym.spaces.discrete.Discrete:
             n_obs = observation_space.n
         else:
@@ -151,10 +152,25 @@ class DQNAgent(QAgent):
         self.policy_net.load_state_dict(torch.load(path))
         self.target_net = deepcopy(self.policy_net)
 
-    def generate_q_table(self, q_shape) -> np.ndarray:
+    def generate_q_table(self, env) -> np.ndarray:
         """Generate a Q-table from the policy network."""
+        observation_space = self.observation_space
+        action_space = self.action_space
+
+        self._observation_type = type(observation_space)
+        if self._observation_type == gym.spaces.tuple.Tuple:
+            n_obs = tuple(map(lambda x: x.n, observation_space))
+            q_shape = n_obs + (action_space.n, )
+        elif self._observation_type == gym.spaces.discrete.Discrete:
+            n_obs = observation_space.n
+            #in this case, shape should be something like (n_obs, action_space.n)
+            q_shape = (n_obs, action_space.n)
+
+        # use env to generate observation space
+        print("q_shape", q_shape)
         q_table = np.zeros(q_shape)
-        for state in range(q_shape[0]):
-            for action in range(q_shape[1]):
-                q_table[state, action] = self.policy_net(torch.tensor(state, dtype=torch.float32)).max().item()
+
+        # for state in range(q_shape[0]):
+        #     for action in range(q_shape[1]):
+        #         q_table[state, action] = self.policy_net(torch.tensor(state, dtype=torch.float32)).max().item()
         return q_table

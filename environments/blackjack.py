@@ -31,15 +31,17 @@ class BlackjackEnvironment(EnvironmentInstance):
             q_data = agent.q_values
             h_data = agent.h_values
         else:
-            return
+            q_data = agent.generate_q_table(self._instance)
 
-        table_cmap = sns.diverging_palette(10, 240, n=128)
-        fig3 = plot_table_blackjack(q_data, center = 0, cmap=table_cmap, title="Q-Values")
-        # save fig3
-        plt.savefig("images/blackjack_q_values.png")
-        if not deep:
+        if q_data is not None:
+            table_cmap = sns.diverging_palette(10, 240, n=128)
+            plot_table_blackjack(q_data, center = 0, cmap=table_cmap, title="Q-Values")
+            # save fig3
+            plt.savefig("images/blackjack_q_values.png")
+            
+        if h_data is not None:
             # currently no H-values implementation for DQN
-            fig4 = plot_table_blackjack(h_data, center = 0, cmap=table_cmap, title="H-Values")
+            plot_table_blackjack(h_data, center = 0, cmap=table_cmap, title="H-Values")
             # save fig4
             plt.savefig("images/blackjack_h_values.png")
         # plt.show()
