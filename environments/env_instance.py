@@ -4,10 +4,11 @@ from utils.plots import line_plot
 import numpy as np
 
 class EnvironmentInstance:
-    def __init__(self, name, **kwargs):
+    def __init__(self, name, deep=False, technique="", **kwargs):
         """Creates an environment instance; name should be Gym env name and 
         kwargs should be env arguments to be passed to gym.make() call."""
         self.name = name
+        self.technique = technique
         self._instance = gym.make(name, **kwargs)
         self._observation_space = self._instance.observation_space
         self._action_space = self._instance.action_space
