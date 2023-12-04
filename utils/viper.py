@@ -3,7 +3,7 @@ import numpy as np
 from environments.env_instance import EnvironmentInstance
 from agents.agent import Agent
 from agents.q_agent import QAgent
-from utils.viper.decision_tree import DTPolicy
+from utils.decision_tree import DTPolicy
 
 def get_rollout(env: EnvironmentInstance, agent: Agent) -> list: 
     """ 
