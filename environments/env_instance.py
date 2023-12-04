@@ -60,12 +60,38 @@ class EnvironmentInstance:
 
             while not done:
                 action = agent.get_action(obs)
-                next_obs, reward, terminated, truncated, info = self._instance.step(action)
+                next_obs, reward, terminated, truncated, _ = self._instance.step(action)
                 done = terminated or truncated
                 obs = next_obs
                 total_reward += reward
 
         return total_reward / num_episodes
+
+    def _generate_rollout(self, agent):
+        """Generates a rollout (the sequence of state, action, reward objects until an episode is done) for the given agent."""
+        obs, _ = self._instance.reset()
+        done = False
+        rollouts = []
+
+        while not done:
+            action = agent.get_action(obs)
+            next_obs, reward, terminated, truncated, _ = self._instance.step(action)
+            done = terminated or truncated
+            obs = next_obs
+
+            rollouts.append((obs, action, reward, done))
+        
+        return rollouts
+
+    def get_rollout_batch(self, agent, rollout_batch_size):
+        """Returns a batch of rollouts for use in VIPER technique."""
+        batch = []
+
+        for _ in range(rollout_batch_size):
+            rollout = self._generate_rollout(agent)
+            batch.append(rollout)
+        
+        return batch
     
     def generate_plots(self, evaluation_results, **kwargs):
         """Generates generic plots for the given agent and evaluation results."""

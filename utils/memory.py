@@ -5,6 +5,7 @@ Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
 class ReplayMemory(object):
+    """A cyclic buffer of bounded size that holds the transitions observed by an agent during its training."""
 
     def __init__(self, capacity):
         self.memory = deque([], maxlen=capacity)
