@@ -1,13 +1,15 @@
 import numpy as np
 
 class Agent:
+    """Base class for a Reinforcement Learning agent."""
     def __init__(self):
+        """Initializes the agent. Must be implemented by all subclasses."""
         raise(NotImplementedError)
 
     def get_action(self, obs, eval: bool = False) -> int:
         """Returns the action to be taken given the current state of the environment. Should always be an index of the action space."""
         raise(NotImplementedError)
-
+        
     def update(
         self,
         obs,

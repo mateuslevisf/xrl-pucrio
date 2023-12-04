@@ -137,6 +137,9 @@ class DQNAgent(QAgent):
         self.target_net.load_state_dict(target_net_state_dict)
 
     # Override the QAgent's select_action_from_policy method
+    def get_q_values_for_obs(self, obs):
+        return self.policy_net(torch.tensor(obs, dtype=torch.float32)).detach().numpy()
+
     def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:
         """Select an action through the policy network."""
         with torch.no_grad():

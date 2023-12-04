@@ -79,7 +79,7 @@ class QAgent(Agent):
         self.final_epsilon = final_epsilon
         self.action_space = action_space
 
-    def get_action(self, obs: tuple[int, int, bool], eval: bool = False) -> int:
+    def get_action(self, obs, eval: bool = False) -> int:
         """
         Returns the best action with probability (1 - epsilon)
         otherwise a random action with probability epsilon to ensure exploration.
@@ -99,11 +99,11 @@ class QAgent(Agent):
 
     def update(
         self,
-        obs: tuple[int, int, bool],
+        obs,
         action: int,
         reward: float,
         terminated: bool,
-        next_obs: tuple[int, int, bool],
+        next_obs,
     ):  
         """Updates the Q-value and H-value of an action."""
         # Updating Q values
@@ -147,9 +147,13 @@ class QAgent(Agent):
         """Decays epsilon by multiplying it with a decay factor."""
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
 
-    def select_action_from_policy(self, obs: tuple[int, int, bool]) -> int:
+    def get_q_values_for_obs(self, obs):
+        """Returns the Q-values for a given observation."""
+        return self.q_values[obs]
+
+    def select_action_from_policy(self, obs) -> int:
         """Returns the best action according to the learned policy."""
-        return int(np.argmax(self.q_values[obs]))
+        return int(np.argmax(self.get_q_values_for_obs(obs)))
 
     def select_random_action(self) -> int:
         """Returns a random action."""
