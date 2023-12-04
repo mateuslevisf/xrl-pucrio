@@ -16,6 +16,11 @@ class EnvironmentInstance:
         """Resets the environment and returns the initial observation."""
         return self._instance.reset()
 
+    def step(self, action):
+        """Executes the given action and returns the next observation, reward, 
+        terminated, truncated and info objects."""
+        return self._instance.step(action)
+
     def loop(self, agent, num_episodes, evaluation_interval, evaluation_duration, already_wrapped=False):
         """Executes the training loop for the given agent and number of episodes.
             Returns a dictionary with the evaluation results."""
@@ -67,32 +72,6 @@ class EnvironmentInstance:
 
         return total_reward / num_episodes
 
-    def _generate_rollout(self, agent):
-        """Generates a rollout (the sequence of state, action, reward objects until an episode is done) for the given agent."""
-        obs, _ = self._instance.reset()
-        done = False
-        rollouts = []
-
-        while not done:
-            action = agent.get_action(obs)
-            next_obs, reward, terminated, truncated, _ = self._instance.step(action)
-            done = terminated or truncated
-            obs = next_obs
-
-            rollouts.append((obs, action, reward, done))
-        
-        return rollouts
-
-    def get_rollout_batch(self, agent, rollout_batch_size):
-        """Returns a batch of rollouts for use in VIPER technique."""
-        batch = []
-
-        for _ in range(rollout_batch_size):
-            rollout = self._generate_rollout(agent)
-            batch.append(rollout)
-        
-        return batch
-    
     def generate_plots(self, evaluation_results, **kwargs):
         """Generates generic plots for the given agent and evaluation results."""
         line_plot(evaluation_results.keys(), evaluation_results.values(), title="Evaluation results", xlabel="Episode number", 

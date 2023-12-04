@@ -24,7 +24,6 @@ def main():
 
     args = parser.parse_args()
 
-
     set_should_print(args.should_print)
     show_running_info(vars(args))
     
@@ -32,13 +31,13 @@ def main():
     technique = args.technique
 
     if environment == 'blackjack':
-        env = BlackjackEnvironment(sab=True)
+        env = BlackjackEnvironment(sab=True, technique=technique, deep=args.deep)
     elif environment == 'cartpole':
-        env = CartpoleEnvironment(deep=args.deep)
+        env = CartpoleEnvironment(deep=args.deep, technique=technique)
     else:
         log("Invalid combination of environment and technique.")
         sys.exit(1)
-
+    
     env_action_space = env.get_action_space()
     env_observation_space = env.get_observation_space()
 
