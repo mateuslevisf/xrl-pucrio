@@ -1,11 +1,14 @@
 import numpy as np
+from collections import namedtuple
 
 from environments.env_instance import EnvironmentInstance
 from agents.agent import Agent
 from agents.q_agent import QAgent
 from utils.decision_tree import DTPolicy
 
-def get_rollout(env: EnvironmentInstance, agent: Agent) -> list: 
+Rollout = namedtuple("Rollout", ["obs", "action", "reward", "done"])
+
+def get_rollout(env: EnvironmentInstance, agent: Agent) -> list[Rollout]: 
     """ 
     Runs a single rollout of the agent in the environment.
     """
@@ -19,11 +22,11 @@ def get_rollout(env: EnvironmentInstance, agent: Agent) -> list:
         done = terminated or truncated
         obs = next_obs
 
-        rollout.append((obs, action, reward, done))
+        rollout.append(Rollout(obs, action, reward, done))
     
     return rollout
 
-def get_rollout_batch(env: EnvironmentInstance, agent: Agent, rollout_batch_size: int) -> list:
+def get_rollout_batch(env: EnvironmentInstance, agent: Agent, rollout_batch_size: int) -> list[Rollout]:
     """Returns a batch of rollouts for use in VIPER technique."""
     batch = []
 
@@ -83,9 +86,9 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
     students = []
 
     trace = get_rollout_batch(env, trained_agent, rollout_batch_size)
-    observations = [obs for obs, _, _ in trace]
-    actions = [act for _, act, _ in trace]
-    q_values = [q for _, _, q in trace]
+    observations = [rollout.obs for rollout in trace]
+    actions = [rollout.action for rollout in trace]
+    q_values = [trained_agent.get_q_values_for_obs(rollout.obs) for rollout in trace]
 
     for _ in range(max_iters):
         current_obs, current_actions, current_q_values = _sample(observations, actions, q_values, max_samples=100)

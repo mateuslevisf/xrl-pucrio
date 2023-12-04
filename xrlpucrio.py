@@ -90,7 +90,7 @@ def main():
     env.generate_plots(evaluation_results, agent=agent, deep=deep)
 
     if technique == 'viper':
-        train_viper(agent, env, 100, 200)
+        decision_tree = train_viper(agent, env, 100, 200)
 
     env.close()
 
