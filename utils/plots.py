@@ -143,3 +143,28 @@ def plot_table_blackjack(data, center=None, figsize=(7.5, 12), cmap=None, title=
         cbar = ax.collections[0].colorbar
         cbar.ax.tick_params(labelsize=10)
     return f
+
+def plot_table_cartpole(data, title, figsize=(20, 7.5), contrast=False):
+    center = None
+    if contrast:
+        cmap = sns.diverging_palette(10, 240, n=128)
+        center = 0
+    else:
+        cmap = 'Blues'
+
+    f, ax = plt.subplots(figsize=figsize)
+    ax = sns.heatmap(data, linewidth=1, center=center, cmap=cmap, xticklabels=20, yticklabels=['left', 'right'])
+    ax.set_title(title)
+    ax.set_ylim(2, 0)
+    ax.set_ylabel('Actions')
+    ax.set_xlabel('States')
+    # ax.set_xticks(np.arange(70, 91, 1))
+    ax.tick_params(labelsize=12)
+    ax.set_yticklabels(ax.get_yticklabels(), rotation=0)
+
+    cbar = ax.collections[0].colorbar
+    cbar.ax.tick_params(labelsize=16)
+    # f.tight_layout()
+    f.subplots_adjust(top=0.8, bottom=0.3, right=0.8)
+    f.tight_layout()
+    return f

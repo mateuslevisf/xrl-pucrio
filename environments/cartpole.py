@@ -1,6 +1,11 @@
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 from environments.env_instance import EnvironmentInstance
 from utils.wrappers import DiscretizedObservationWrapper
-import numpy as np
+from utils.plots import plot_table_cartpole
+
 
 class CartpoleEnvironment(EnvironmentInstance):
     def __init__(self, deep=False, **kwargs):
@@ -23,3 +28,29 @@ class CartpoleEnvironment(EnvironmentInstance):
 
     def loop(self, *kargs ,**kwargs):
         return super().loop(*kargs, **kwargs, already_wrapped=True)
+
+    def generate_plots(self, evaluation_results, agent, deep=False, **kwargs):
+        if agent is None:
+            raise("Generate plots function for Cartpole environment requires agent to be passed.")
+        super().generate_plots(evaluation_results, **kwargs)
+
+        q_data=None
+        h_data=None
+        if not deep:
+            q_data = agent.q_values
+            h_data = agent.h_values
+        else:
+            q_data = agent.generate_q_table(self._instance)
+
+        if q_data is not None:
+            table_cmap = sns.diverging_palette(10, 240, n=128)
+            plot_table_cartpole(q_data, title="Q-Values")
+            # save fig3
+            plt.savefig("images/cartpole_q_values.png")
+            
+        if h_data is not None:
+            # currently no H-values implementation for DQN
+            plot_table_cartpole(h_data, title="H-Values")
+            # save fig4
+            plt.savefig("images/cartpole_h_values.png")
+        # plt.show()
