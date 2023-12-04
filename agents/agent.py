@@ -4,13 +4,13 @@ class Agent:
     def __init__(self):
         raise(NotImplementedError)
 
-    def get_action(self, obs: tuple[int, int, bool], eval: bool = False) -> int:
+    def get_action(self, obs, eval: bool = False) -> int:
         """Returns the action to be taken given the current state of the environment. Should always be an index of the action space."""
         raise(NotImplementedError)
 
     def update(
         self,
-        obs: tuple[int, int, bool],
+        obs,
         action: int,
         reward: float,
         terminated: bool,
