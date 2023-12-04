@@ -5,10 +5,9 @@ from environments.env_instance import EnvironmentInstance
 from agents.agent import Agent
 from agents.q_agent import QAgent
 from utils.decision_tree import DTPolicy
+from utils.memory import Transition
 
-Rollout = namedtuple("Rollout", ["obs", "action", "reward", "done"])
-
-def get_rollout(env: EnvironmentInstance, agent: Agent) -> list[Rollout]: 
+def get_rollout(env: EnvironmentInstance, agent: Agent) -> list[Transition]: 
     """ 
     Runs a single rollout of the agent in the environment.
     """
@@ -20,13 +19,14 @@ def get_rollout(env: EnvironmentInstance, agent: Agent) -> list[Rollout]:
         action = agent.get_action(obs)
         next_obs, reward, terminated, truncated, _ = env.step(action)
         done = terminated or truncated
-        obs = next_obs
 
-        rollout.append(Rollout(obs, action, reward, done))
+        rollout.append(Transition(obs, action, next_obs, reward))
+
+        obs = next_obs
     
     return rollout
 
-def get_rollout_batch(env: EnvironmentInstance, agent: Agent, rollout_batch_size: int) -> list[Rollout]:
+def get_rollout_batch(env: EnvironmentInstance, agent: Agent, rollout_batch_size: int) -> list[Transition]:
     """Returns a batch of rollouts for use in VIPER technique."""
     batch = []
 
@@ -70,7 +70,7 @@ def get_best_student(env, students_and_rewards, n_tests = 100):
         new_students = []
 
         for i in range(len(n_students)):
-            policy, reward = sorted_students[i]
+            policy, _ = sorted_students[i]
             new_rewards = test_student(env, policy, n_tests)
             new_students.append((policy, np.mean(new_rewards)))
 
@@ -86,9 +86,9 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
     students = []
 
     trace = get_rollout_batch(env, trained_agent, rollout_batch_size)
-    observations = [rollout.obs for rollout in trace]
+    observations = [rollout.state for rollout in trace]
     actions = [rollout.action for rollout in trace]
-    q_values = [trained_agent.get_q_values_for_obs(rollout.obs) for rollout in trace]
+    q_values = [trained_agent.get_q_values_for_obs(rollout.state) for rollout in trace]
 
     for _ in range(max_iters):
         current_obs, current_actions, current_q_values = _sample(observations, actions, q_values, max_samples=100)
