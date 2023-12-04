@@ -15,6 +15,9 @@ from environments.cartpole import CartpoleEnvironment
 from agents.q_agent import QAgent
 from agents.dqn_agent import DQNAgent
 
+# Importing viper functions
+from utils.viper import train_viper
+
 def main():
     # first we clean up the images folder
     folder = 'images'
@@ -30,10 +33,14 @@ def main():
     environment = args.environment
     technique = args.technique
 
+    deep = False
+    if technique == 'cartpole':
+        deep = True
+
     if environment == 'blackjack':
-        env = BlackjackEnvironment(sab=True, technique=technique, deep=args.deep)
+        env = BlackjackEnvironment(sab=True, technique=technique, deep=deep)
     elif environment == 'cartpole':
-        env = CartpoleEnvironment(deep=args.deep, technique=technique)
+        env = CartpoleEnvironment(deep=deep, technique=technique)
     else:
         log("Invalid combination of environment and technique.")
         sys.exit(1)
@@ -66,7 +73,7 @@ def main():
         "discount_factor": discount_factor,
     }
     
-    if not args.deep:
+    if not deep:
         log("Using Q-learning agent")
         agent = QAgent(**params)
     else:
@@ -80,7 +87,10 @@ def main():
 
     evaluation_results = env.loop(agent, num_episodes, evaluation_interval, evaluation_duration)
 
-    env.generate_plots(evaluation_results, agent=agent, deep=args.deep)
+    env.generate_plots(evaluation_results, agent=agent, deep=deep)
+
+    if technique == 'viper':
+        train_viper(agent, env, 100, 200)
 
     env.close()
 
