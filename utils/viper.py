@@ -49,8 +49,16 @@ def _sample(obss, acts, qs, max_samples, is_reweight=False):
         # Uniformly (without replacement)
         idx = np.random.choice(len(obss), size=min(max_samples, np.sum(ps > 0)), replace=False)    
 
-    # Step 3: Obtain sampled indices
-    return obss[idx], acts[idx], qs[idx]
+    # Step 3: Obtain sampled indices from multi-value idx array
+    sampled_obs = []
+    sampled_acts = []
+    sampled_qs = []
+    for i in idx:
+        sampled_obs.append(obss[i])
+        sampled_acts.append(acts[i])
+        sampled_qs.append(qs[i])
+
+    return sampled_obs, sampled_acts, sampled_qs
 
 
 def test_student(env, student, n_test_rollouts):
@@ -90,8 +98,10 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
     actions = [rollout.action for rollout in trace]
     q_values = [trained_agent.get_q_values_for_obs(rollout.state) for rollout in trace]
 
+    print("q_values", q_values)
+
     for _ in range(max_iters):
-        current_obs, current_actions, current_q_values = _sample(observations, actions, q_values, max_samples=100)
+        current_obs, current_actions, current_q_values = _sample(observations, actions, q_values, max_samples=rollout_batch_size//2)
         decision_tree.train(current_obs, current_actions, current_q_values)
 
         student_trace = get_rollout_batch(env, decision_tree, rollout_batch_size)
