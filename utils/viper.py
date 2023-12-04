@@ -1,6 +1,7 @@
 import numpy as np
 
 from environments.env_instance import EnvironmentInstance
+from agents.agent import Agent
 from agents.q_agent import QAgent
 from utils.viper.decision_tree import DTPolicy
 
@@ -40,13 +41,39 @@ def _sample(obss, acts, qs, max_samples, is_reweight=False):
     # Step 2: Sample points
     if is_reweight:
         # According to p(s)
-        idx = np.random.choice(len(obss), size=min(max_pts, np.sum(ps > 0)), p=ps)
+        idx = np.random.choice(len(obss), size=min(max_samples, np.sum(ps > 0)), p=ps)
     else:
         # Uniformly (without replacement)
-        idx = np.random.choice(len(obss), size=min(max_pts, np.sum(ps > 0)), replace=False)    
+        idx = np.random.choice(len(obss), size=min(max_samples, np.sum(ps > 0)), replace=False)    
 
     # Step 3: Obtain sampled indices
     return obss[idx], acts[idx], qs[idx]
+
+
+def test_student(env, student, n_test_rollouts):
+    cum_rew = 0.0
+    for i in range(n_test_rollouts):
+        student_trace = get_rollout(env, student, False)
+        cum_rew += sum((rew for _, _, rew in student_trace))
+    return cum_rew / n_test_rollouts
+
+def get_best_student(env, students_and_rewards, n_tests = 100):
+    while len(students_and_rewards) > 1:
+        sorted_students = sorted(students_and_rewards, key=lambda x: x[1], reverse=True)
+
+        # ignore latter half of students
+        n_students = int((len(students_and_rewards) + 1)/2)
+
+        new_students = []
+
+        for i in range(len(n_students)):
+            policy, reward = sorted_students[i]
+            new_rewards = test_student(env, policy, n_tests)
+            new_students.append((policy, np.mean(new_rewards)))
+
+        students_and_rewards = new_students
+
+    return students_and_rewards[0][0]
 
 
 def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_size: int, max_iters: int):
@@ -78,6 +105,6 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
 
         students.append((decision_tree.clone(), current_reward))
         
-    best_student = max(students, key=lambda x: x[1])[0]
+    best_student = get_best_student(env, students)
 
     return best_student
