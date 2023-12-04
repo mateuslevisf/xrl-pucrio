@@ -102,10 +102,10 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
 
     for _ in range(max_iters):
         current_obs, current_actions, current_q_values = _sample(observations, actions, q_values, max_samples=rollout_batch_size//2)
-        decision_tree.train(current_obs, current_actions, current_q_values)
+        decision_tree.train(current_obs, current_actions, 0.8)
 
         student_trace = get_rollout_batch(env, decision_tree, rollout_batch_size)
-        student_observations = [obs for obs, _, _ in student_trace]
+        student_observations = [rollout.state for rollout in student_trace]
 
         oracle_qs = [trained_agent.get_q_values_for_obs(obs) for obs in student_observations]
         oracle_actions = [np.argmax(qs) for qs in oracle_qs]
@@ -114,7 +114,7 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
         actions.extend(oracle_actions)
         q_values.extend(oracle_qs)
 
-        current_reward = sum((rew for _, _, rew in student_trace)) / rollout_batch_size
+        current_reward = sum((rollout.reward for rollout in student_trace)) / rollout_batch_size
 
         students.append((decision_tree.clone(), current_reward))
         
