@@ -69,3 +69,13 @@ class DTPolicy(Agent):
         clone = DTPolicy(self.max_depth)
         clone.tree = self.tree
         return clone
+
+    def save_viz(self, path):
+        save_dt_policy_viz(self, path, 'dt_policy.dot')
+
+    def save(self, path):
+        save_dt_policy(self, path, 'dt_policy.pk')
+        self.save_viz()
+
+    def load(self, path):
+        return load_dt_policy(path, 'dt_policy.pk')

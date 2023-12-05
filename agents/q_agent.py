@@ -141,6 +141,18 @@ class QAgent(Agent):
                 expected_h = h_update + self.discount_factor * future_h_value - self.h_values[obs][action]
                 self.h_values[obs][action] += self.lr * expected_h
 
+    def save(self, path: str):
+        """Saves the Q-values and H-values to a file."""
+        np.save(path, self.q_values)
+        if self.h_values is not None:
+            np.save(path + "_h_values", self.h_values)
+
+    def load(self, path: str):
+        """Loads the Q-values and H-values from a file."""
+        self.q_values = np.load(path + ".npy")
+        if self.h_values is not None:
+            self.h_values = np.load(path + "_h_values.npy")
+
     # QAgent methods
 
     def decay_epsilon(self):

@@ -40,3 +40,11 @@ class Agent:
             rewards.append(episode_reward)
         return np.mean(rewards)
 
+    def save(self, path: str):
+        """Saves the agent's parameters to a file."""
+        raise(NotImplementedError)
+
+    def load(self, path: str):
+        """Loads the agent's parameters from a file."""
+        raise(NotImplementedError)
+

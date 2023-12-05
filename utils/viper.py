@@ -4,7 +4,7 @@ from collections import namedtuple
 from environments.env_instance import EnvironmentInstance
 from agents.agent import Agent
 from agents.q_agent import QAgent
-from utils.decision_tree import DTPolicy
+from agents.decision_tree import DTPolicy
 from utils.memory import Transition
 from utils.log import log
 
