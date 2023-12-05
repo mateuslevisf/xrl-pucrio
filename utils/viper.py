@@ -67,8 +67,8 @@ def _sample(obss, acts, qs, max_samples, is_reweight=False):
 def test_student(env, student, n_test_rollouts):
     cum_rew = 0.0
     for i in range(n_test_rollouts):
-        student_trace = get_rollout(env, student, False)
-        cum_rew += sum((rew for _, _, rew in student_trace))
+        student_trace = get_rollout(env, student)
+        cum_rew += sum((rollout.reward for rollout in student_trace))
     return cum_rew / n_test_rollouts
 
 def get_best_student(env, students_and_rewards, n_tests = 100):
