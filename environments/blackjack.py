@@ -37,11 +37,11 @@ class BlackjackEnvironment(EnvironmentInstance):
             table_cmap = sns.diverging_palette(10, 240, n=128)
             plot_table_blackjack(q_data, center = 0, cmap=table_cmap, title="Q-Values")
             # save fig3
-            plt.savefig("images/blackjack_q_values.png")
+            plt.savefig("results/images/blackjack_q_values.png")
             
         if h_data is not None:
             # currently no H-values implementation for DQN
             plot_table_blackjack(h_data, center = 0, cmap=table_cmap, title="H-Values")
             # save fig4
-            plt.savefig("images/blackjack_h_values.png")
+            plt.savefig("results/images/blackjack_h_values.png")
         # plt.show()

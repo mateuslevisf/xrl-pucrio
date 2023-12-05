@@ -175,6 +175,8 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
-# Ignore images folder
-images/*.png
-!images/.gitkeep 
+# Ignore results folder
+results/*
+!results/.gitkeep 
+!results/images
+!results/images/.gitkeep

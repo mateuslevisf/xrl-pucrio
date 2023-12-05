@@ -76,7 +76,7 @@ class EnvironmentInstance:
     def generate_plots(self, evaluation_results, **kwargs):
         """Generates generic plots for the given agent and evaluation results."""
         line_plot(evaluation_results.keys(), evaluation_results.values(), title="Evaluation results", xlabel="Episode number", 
-            ylabel="Average reward", save_path="images/{}_evaluation_results.png".format(self.name))
+            ylabel="Average reward", save_path="results/images/{}_evaluation_results.png".format(self.name))
 
     def close(self):
         """Closes the environment."""

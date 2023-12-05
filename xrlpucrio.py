@@ -6,6 +6,7 @@ import shutil
 # Importing util functions
 from utils.arguments_parser import parser
 from utils.log import log, set_should_print, show_running_info
+from utils.parameters import save_params
 
 # Importing own environments
 from environments.blackjack import BlackjackEnvironment
@@ -26,6 +27,8 @@ def main():
             os.unlink(os.path.join(root, f))
 
     args = parser.parse_args()
+            
+    save_params(args)
 
     set_should_print(args.should_print)
     show_running_info(vars(args))
