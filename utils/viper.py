@@ -6,6 +6,9 @@ from agents.agent import Agent
 from agents.q_agent import QAgent
 from utils.decision_tree import DTPolicy
 from utils.memory import Transition
+from utils.log import log
+
+from tqdm import tqdm
 
 def get_rollout(env: EnvironmentInstance, agent: Agent) -> list[Transition]: 
     """ 
@@ -77,7 +80,7 @@ def get_best_student(env, students_and_rewards, n_tests = 100):
 
         new_students = []
 
-        for i in range(len(n_students)):
+        for i in range(n_students):
             policy, _ = sorted_students[i]
             new_rewards = test_student(env, policy, n_tests)
             new_students.append((policy, np.mean(new_rewards)))
@@ -98,9 +101,8 @@ def train_viper(trained_agent: QAgent, env: EnvironmentInstance, rollout_batch_s
     actions = [rollout.action for rollout in trace]
     q_values = [trained_agent.get_q_values_for_obs(rollout.state) for rollout in trace]
 
-    print("q_values", q_values)
-
-    for _ in range(max_iters):
+    log("Training VIPER")
+    for _ in tqdm(range(max_iters)):
         current_obs, current_actions, current_q_values = _sample(observations, actions, q_values, max_samples=rollout_batch_size//2)
         decision_tree.train(current_obs, current_actions, 0.8)
 
