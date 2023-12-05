@@ -177,6 +177,7 @@ pyrightconfig.json
 
 # Ignore results folder
 results/*
+results/images/*.png
 !results/.gitkeep 
 !results/images
 !results/images/.gitkeep
