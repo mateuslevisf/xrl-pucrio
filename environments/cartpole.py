@@ -42,15 +42,14 @@ class CartpoleEnvironment(EnvironmentInstance):
         else:
             q_data = agent.generate_q_table(self._instance)
 
-        if q_data is not None:
-            table_cmap = sns.diverging_palette(10, 240, n=128)
-            plot_table_cartpole(q_data, title="Q-Values")
-            # save fig3
-            plt.savefig("images/cartpole_q_values.png")
+        # if q_data is not None:
+        #     table_cmap = sns.diverging_palette(10, 240, n=128)
+        #     plot_table_cartpole(q_data, title="Q-Values")
+        #     # save fig3
+        #     plt.savefig("images/cartpole_q_values.png")
             
-        if h_data is not None:
-            # currently no H-values implementation for DQN
-            plot_table_cartpole(h_data, title="H-Values")
-            # save fig4
-            plt.savefig("images/cartpole_h_values.png")
-        # plt.show()
+        # if h_data is not None:
+        #     # currently no H-values implementation for DQN
+        #     plot_table_cartpole(h_data, title="H-Values")
+        #     # save fig4
+        #     plt.savefig("images/cartpole_h_values.png")

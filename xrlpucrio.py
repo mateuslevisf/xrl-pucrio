@@ -34,7 +34,7 @@ def main():
     technique = args.technique
 
     deep = False
-    if technique == 'cartpole':
+    if technique == 'viper':
         deep = True
 
     if environment == 'blackjack':
