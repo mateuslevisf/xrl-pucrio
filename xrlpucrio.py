@@ -21,10 +21,12 @@ from utils.viper import train_viper
 
 def main():
     # first we clean up the images folder
-    folder = 'images'
+    folder = 'results'
     for root, _, files in os.walk(folder):
         for f in files:
-            os.unlink(os.path.join(root, f))
+            # check if file is .gitkeep
+            if f != '.gitkeep':
+                os.unlink(os.path.join(root, f))
 
     args = parser.parse_args()
             
@@ -36,7 +38,7 @@ def main():
     environment = args.environment
     technique = args.technique
 
-    deep = False
+    deep = args.deep
     if technique == 'viper':
         deep = True
 
@@ -92,8 +94,11 @@ def main():
 
     env.generate_plots(evaluation_results, agent=agent, deep=deep)
 
+    agent.save('results/agent')
+
     if technique == 'viper':
         decision_tree = train_viper(agent, env, 100, 200)
+        decision_tree.save('results/')
 
     env.close()
 

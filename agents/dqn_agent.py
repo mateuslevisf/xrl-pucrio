@@ -149,7 +149,7 @@ class DQNAgent(QAgent):
 
     # DQN specific methods
     def save(self, path: str):
-        torch.save(self.policy_net.state_dict(), path)
+        torch.save(self.policy_net.state_dict(), path+'.pth')
     
     def load(self, path: str):
         self.policy_net.load_state_dict(torch.load(path))
