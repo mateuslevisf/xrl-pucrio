@@ -3,6 +3,7 @@ import pickle as pk
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import export_graphviz
+import pydot
 
 from agents.agent import Agent
 
@@ -72,6 +73,8 @@ class DTPolicy(Agent):
 
     def save_viz(self, path):
         save_dt_policy_viz(self, path, 'dt_policy.dot')
+        (graph,) = pydot.graph_from_dot_file(path + '/dt_policy.dot')
+        graph.write_png(path + '/dt_policy.png')
 
     def save(self, path):
         save_dt_policy(self, path, 'dt_policy.pk')
