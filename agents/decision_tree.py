@@ -75,7 +75,7 @@ class DTPolicy(Agent):
 
     def save(self, path):
         save_dt_policy(self, path, 'dt_policy.pk')
-        self.save_viz()
+        self.save_viz(path)
 
     def load(self, path):
         return load_dt_policy(path, 'dt_policy.pk')
