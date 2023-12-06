@@ -8,6 +8,11 @@ from functools import reduce
 # taken from https://github.com/hmhyau/rl-intention/blob/main/wrappers.py
 
 class DiscretizedObservationWrapper(ObservationWrapper):
+    """
+        Discretize the observation space by rounding values to the nearest bin.
+        Necessary for Q-learning and tabular methods to work with environments
+        with continuous observation spaces.
+    """
     def __init__(self, env, n_bins=None, low=None, high=None, convert=True):
         super().__init__(env)
         self.convert = convert

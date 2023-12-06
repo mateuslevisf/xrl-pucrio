@@ -3,7 +3,7 @@ import torch.nn.functional as F
 
 class DQN(nn.Module):
 
-    def __init__(self, n_observations, n_actions, hidden_dim=128):
+    def __init__(self, n_observations, n_actions, hidden_dim=64):
         super(DQN, self).__init__()
         # Standard DQN architecture:
         # DQN takes the observations as input and outputs the Q-values for each action in the given state
