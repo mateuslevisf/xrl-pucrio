@@ -135,7 +135,7 @@ def plot_table_blackjack(data, center=None, figsize=(7.5, 12), cmap=None, title=
         cbar.ax.tick_params(labelsize=10)
     return f
 
-def plot_table_cartpole(data, title, figsize=(20, 7.5), contrast=False):
+def plot_table_cartpole(data, title, figsize=(20, 4), contrast=False):
     center = None
     if contrast:
         cmap = sns.diverging_palette(10, 240, n=128)
