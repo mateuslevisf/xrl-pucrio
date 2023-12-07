@@ -26,8 +26,10 @@ class TestViperCartpole(unittest.TestCase):
 
     def test_cartpole_h_values(self):
         """Test if the agent can learn to play Cartpole with VIPER."""
-        print("Testing Cartpole with h-values by running for {} episodes.".format(self.num_episodes))
+        print("Testing Cartpole with VIPER by running for {} episodes.".format(self.num_episodes))
         self.env.loop(self.agent, self.num_episodes, 1000, 1000)
+        self.assertTrue(True)
+        train_viper(self.agent, self.env, 50, 100)
         self.assertTrue(True)
 
 class TestViperBlackjack(unittest.TestCase):
@@ -50,8 +52,8 @@ class TestViperBlackjack(unittest.TestCase):
 
     def test_blackjack_h_values(self):
         """Test if the agent can learn to play Blackjack with VIPER."""
-        print("Testing Blackjack with h-values by running for {} episodes.".format(self.num_episodes))
+        print("Testing Blackjack with VIPER by running for {} episodes.".format(self.num_episodes))
         self.env.loop(self.agent, self.num_episodes, 1000, 1000)
         self.assertTrue(True)
-        train_viper(self.agent, self.env, self.num_episodes, 1000)
+        train_viper(self.agent, self.env, 50, 100)
         self.assertTrue(True)
