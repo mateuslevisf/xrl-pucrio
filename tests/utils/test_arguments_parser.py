@@ -4,6 +4,11 @@ import os
 import utils.arguments_parser
 
 class TestArgumentsParser(unittest.TestCase):
+    def test_create_parser(self):
+        """Test creating the argument parser."""
+        parser = utils.arguments_parser.init_parser()
+        self.assertIsInstance(parser, utils.arguments_parser.argparse.ArgumentParser)
+
     def test_parse_cli_args(self):
         arguments = ['-t', 'hvalues', '-e', 'blackjack', '-n', '1000', '--noprint']
         parsed_args = utils.arguments_parser.parse_args(arguments)
