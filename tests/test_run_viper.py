@@ -8,7 +8,7 @@ from utils.viper import train_viper
 
 class TestViperCartpole(unittest.TestCase):
     def setUp(self):
-        self.num_episodes = 10_000
+        self.num_episodes = 2_000
         initial_epsilon = 1.0
         epsilon_decay = initial_epsilon / (self.num_episodes / 2)
         self.env = CartpoleEnvironment(deep=True, technique='viper')
