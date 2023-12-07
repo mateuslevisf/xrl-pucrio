@@ -22,6 +22,7 @@ class DQNAgent(QAgent):
         discount_factor: float = 0.95,
         batch_size: int = 128,
         target_update: float = 0.005,
+        hidden_dim: int = 64,
         with_h_values: bool = True
     ):
         super().init_qlearning_params(
@@ -41,7 +42,7 @@ class DQNAgent(QAgent):
         # print("n_obs: ", n_obs)
         n_actions = self.action_space.n
 
-        self.policy_net = DQN(n_obs, n_actions)
+        self.policy_net = DQN(n_obs, n_actions, hidden_dim=hidden_dim)
         self.target_net = deepcopy(self.policy_net)
         self.optimizer = torch.optim.Adam(self.policy_net.parameters(), lr=self.lr)
 
