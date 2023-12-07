@@ -58,12 +58,13 @@ def parse_args(sys_arguments) -> dict:
         save_params(parsing_result)
     return parsing_result
 
-def save_params(arg_dictionary: dict) -> None:
+def save_params(arg_dictionary: dict) -> str:
     """Saves the parameters used in the experiment to JSON file. Used only for logging purposes if
-    user did not pass the -f option."""
+    user did not pass the -f option. Returns the path to the saved file."""
     save_file = "results/params.json"
     with open(save_file, 'w') as f:
         json.dump(arg_dictionary, f, indent=4)
+    return save_file
 
 def add_missing_params(arg_dictionary: dict) -> dict:
     """Adds missing parameters to the dictionary. Used to avoid errors when accessing
