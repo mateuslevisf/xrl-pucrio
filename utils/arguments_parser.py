@@ -3,37 +3,43 @@
 import argparse
 import json
 
-parser = argparse.ArgumentParser(
-    description='Test XRL techniques on different environments.')
+def init_parser() -> argparse.ArgumentParser:
+    """Initializes the argument parser with all the possible arguments and their default values."""
 
-# Defining command line arguments
+    parser = argparse.ArgumentParser(
+        description='Test XRL techniques on different environments.')
 
-parser.add_argument('-t', '--technique', dest='technique', type=str, help='The XRL technique to be tested.', 
-    default='hvalues', choices=['hvalues', 'viper'])
-parser.add_argument('-e', '--environment', dest='environment', type=str, 
-    help='The environment to test the technique on.', default='blackjack',
-    choices=['blackjack', 'cartpole'])
-parser.add_argument('-n', '--num_episodes', dest='num_episodes', type=int,
-    help='The number of episodes to run the technique on.', default=100_000)
-parser.add_argument('-l', '--load', dest='load_path', 
-    help='Load a saved model by passing path.')
-parser.add_argument('-f', '--file', dest='file_path', 
-    help='Pass program parameters from a JSON file instead of command line. \
-    Using this option will override any command line arguments.')
+    # Defining command line arguments
 
-# parser.add_argument('-d', '-deep', dest='deep', action='store_true', 
-#     help='Enable deep learning if available for chosen technique and environment.')
-parser.add_argument('--noprint', dest='should_print', action='store_false', help='Disable log printing.')
+    parser.add_argument('-t', '--technique', dest='technique', type=str, help='The XRL technique to be tested.', 
+        default='hvalues', choices=['hvalues', 'viper'])
+    parser.add_argument('-e', '--environment', dest='environment', type=str, 
+        help='The environment to test the technique on.', default='blackjack',
+        choices=['blackjack', 'cartpole'])
+    parser.add_argument('-n', '--num_episodes', dest='num_episodes', type=int,
+        help='The number of episodes to run the technique on.', default=100_000)
+    parser.add_argument('-l', '--load', dest='load_path', 
+        help='Load a saved model by passing path.')
+    parser.add_argument('-f', '--file', dest='file_path', 
+        help='Pass program parameters from a JSON file instead of command line. \
+        Using this option will override any command line arguments.')
 
-# Defining defaults for some arguments
+    # parser.add_argument('-d', '-deep', dest='deep', action='store_true', 
+    #     help='Enable deep learning if available for chosen technique and environment.')
+    parser.add_argument('--noprint', dest='should_print', action='store_false', help='Disable log printing.')
 
-parser.set_defaults(should_print=True)
-parser.set_defaults(deep=False)
+    # Defining defaults for some arguments
 
-def parse_args() -> dict:
+    parser.set_defaults(should_print=True)
+    parser.set_defaults(deep=False)
+
+    return parser
+
+def parse_args(sys_arguments) -> dict:
+    parser = init_parser()
     """Returns the parsed arguments from the command line. If the -f option is used,
     then the arguments will be parsed from a JSON file instead of the command line."""
-    parsing_result = parser.parse_args()
+    parsing_result = parser.parse_args(sys_arguments)
 
     print("parsing_result: ", parsing_result)
 
@@ -71,7 +77,8 @@ def add_missing_params(arg_dictionary: dict) -> dict:
         'load_path': None,
         'file_path': None,
         'should_print': True,
-        'deep': False
+        'deep': False,
+        'agent': {}
     }
     for param in missing_params:
         if param not in arg_dictionary:

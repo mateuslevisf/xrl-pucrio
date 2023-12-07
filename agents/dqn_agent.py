@@ -39,7 +39,6 @@ class DQNAgent(QAgent):
             n_obs = observation_space.n
         else:
             n_obs = len(observation_space)
-        # print("n_obs: ", n_obs)
         n_actions = self.action_space.n
 
         self.policy_net = DQN(n_obs, n_actions, hidden_dim=hidden_dim)

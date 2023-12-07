@@ -27,7 +27,7 @@ def main():
             if f != '.gitkeep':
                 os.unlink(os.path.join(root, f))
 
-    args = parse_args()
+    args = parse_args(sys.argv[1:])
 
     set_should_print(args['should_print'])
     show_running_info(args)

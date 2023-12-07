@@ -1,0 +1,5 @@
+{
+    "technique": "hvalues",
+    "environment": "blackjack",
+    "num_episodes": 100000
+}
