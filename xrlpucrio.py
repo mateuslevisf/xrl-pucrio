@@ -51,9 +51,13 @@ def main():
     env_observation_space = env.get_observation_space()
 
     # Agent hyperparameters definitions
+    initial_epsilon = args['agent']['initial_epsilon'] if args['agent']['initial_epsilon'] is not None else 1
+    final_epsilon = args['agent']['final_epsilon'] if args['agent']['final_epsilon'] is not None else 0.01
+    num_episodes = args['num_episodes']
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     learning_rate = args['agent']['learning_rate'] if args['agent']['learning_rate'] is not None else 0.01
     discount_factor = args['agent']['discount_factor'] if args['agent']['discount_factor'] is not None else 1
+    hidden_dim = args['agent']['hidden_dim'] if args['agent']['hidden_dim'] is not None else 64
     # if environment == 'cartpole':
     #     # 0.0001 was bad
     #     # 0.1 was bad
@@ -61,10 +65,6 @@ def main():
     #     # testing with 1mil -> two peaks at 90 in eval but still not stable
     #     learning_rate = 0.01
     #     discount_factor = 1
-    num_episodes = args['num_episodes']
-    initial_epsilon = args['agent']['initial_epsilon'] if args['agent']['initial_epsilon'] is not None else 1
-    final_epsilon = args['agent']['final_epsilon'] if args['agent']['final_epsilon'] is not None else 0.01
-    hidden_dim = args['agent']['hidden_dim'] if args['agent']['hidden_dim'] is not None else 64
 
     params = {
         "learning_rate": learning_rate,
@@ -73,8 +73,7 @@ def main():
         "final_epsilon": final_epsilon,
         "action_space": env_action_space,
         "observation_space": env_observation_space,
-        "discount_factor": discount_factor,
-        "hidden_dim": hidden_dim
+        "discount_factor": discount_factor
     }
     
     if not deep:
@@ -82,6 +81,7 @@ def main():
         agent = QAgent(**params)
     else:
         log("Using DQN agent")
+        params['hidden_dim'] = hidden_dim
         agent = DQNAgent(**params)
 
     # Execution setup

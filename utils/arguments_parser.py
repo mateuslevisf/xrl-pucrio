@@ -79,9 +79,20 @@ def add_missing_params(arg_dictionary: dict) -> dict:
         'file_path': None,
         'should_print': True,
         'deep': False,
-        'agent': {}
+        'agent': {
+            'initial_epsilon': 1,
+            'final_epsilon': 0.01,
+            'learning_rate': 0.01,
+            'discount_factor': 1,
+            'hidden_dim': 64
+        }
     }
     for param in missing_params:
         if param not in arg_dictionary:
             dict_copy[param] = missing_params[param]
+        else:
+            if param == 'agent':
+                for agent_param in missing_params[param]:
+                    if agent_param not in arg_dictionary[param]:
+                        dict_copy[param][agent_param] = missing_params[param][agent_param]
     return dict_copy

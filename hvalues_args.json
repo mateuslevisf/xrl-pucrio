@@ -1,7 +1,7 @@
 {
     "technique": "hvalues",
     "environment": "blackjack",
-    "num_episodes": 100000,
+    "num_episodes": 1000000,
     "agent": {
         "learning_rate": 0.01,
         "initial_epsilon": 1,
