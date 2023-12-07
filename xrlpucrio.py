@@ -87,7 +87,7 @@ def main():
     # Execution setup
     # evaluation_interval = 1000
     evaluation_interval = num_episodes//50
-    evaluation_duration = 1000
+    evaluation_duration = 50
 
     evaluation_results = env.loop(agent, num_episodes, evaluation_interval, evaluation_duration)
 

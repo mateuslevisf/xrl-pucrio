@@ -22,7 +22,7 @@ class EnvironmentInstance:
         terminated, truncated and info objects."""
         return self._instance.step(action)
 
-    def loop(self, agent, num_episodes, evaluation_interval, evaluation_duration, already_wrapped=False):
+    def loop(self, agent, num_episodes, evaluation_interval, evaluation_duration = 50, already_wrapped=False):
         """Executes the training loop for the given agent and number of episodes.
             Returns a dictionary with the evaluation results."""
         evaluation_results = {}
