@@ -13,12 +13,12 @@ class DQNAgent(QAgent):
 
     # Agent methods
     def __init__(self, 
-        learning_rate: float,
-        initial_epsilon: float,
         epsilon_decay: float,
-        final_epsilon: float,
         action_space: gym.Space,
         observation_space: gym.Space,
+        learning_rate: float = 0.01,
+        initial_epsilon: float = 1.0,
+        final_epsilon: float = 0.01,
         discount_factor: float = 0.95,
         batch_size: int = 128,
         target_update: float = 0.005,

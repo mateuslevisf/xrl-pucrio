@@ -51,6 +51,7 @@ def main():
     env_observation_space = env.get_observation_space()
 
     # Agent hyperparameters definitions
+    epsilon_decay = initial_epsilon / (num_episodes / 2)
     learning_rate = args['agent']['learning_rate'] if args['agent']['learning_rate'] is not None else 0.01
     discount_factor = args['agent']['discount_factor'] if args['agent']['discount_factor'] is not None else 1
     # if environment == 'cartpole':
@@ -62,7 +63,6 @@ def main():
     #     discount_factor = 1
     num_episodes = args['num_episodes']
     initial_epsilon = args['agent']['initial_epsilon'] if args['agent']['initial_epsilon'] is not None else 1
-    epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = args['agent']['final_epsilon'] if args['agent']['final_epsilon'] is not None else 0.01
     hidden_dim = args['agent']['hidden_dim'] if args['agent']['hidden_dim'] is not None else 64
 
