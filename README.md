@@ -28,10 +28,12 @@ python xrlpucrio.py
 
 The -h option can be added to the above command line in order to get more info about running options.
 
-To run tests:
+To run all tests:
 ```
 python -m unittest discover -v
 ```
+
+The "main" tests (in files "test_run_hvalues.py" and "test_run_viper.py") take quite a while to run (around 10 minutes).
 
 ## References
 
