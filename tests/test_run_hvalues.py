@@ -4,7 +4,7 @@ from agents.q_agent import QAgent
 from environments.cartpole import CartpoleEnvironment
 from environments.blackjack import BlackjackEnvironment
 
-class testHValuesCartpole(unittest.TestCase):
+class TestHValuesCartpole(unittest.TestCase):
     def setUp(self):
         self.num_episodes = 10_000
         initial_epsilon = 1.0
@@ -29,7 +29,7 @@ class testHValuesCartpole(unittest.TestCase):
         self.env.loop(self.agent, self.num_episodes, 1000, 1000)
         self.assertTrue(True)
 
-class testHValuesBlackjack(unittest.TestCase):
+class TestHValuesBlackjack(unittest.TestCase):
     def setUp(self):
         self.num_episodes = 10_000
         initial_epsilon = 1.0
