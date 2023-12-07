@@ -4,9 +4,8 @@ import os
 import shutil
 
 # Importing util functions
-from utils.arguments_parser import parser
+from utils.arguments_parser import parse_args
 from utils.log import log, set_should_print, show_running_info
-from utils.parameters import save_params
 
 # Importing own environments
 from environments.blackjack import BlackjackEnvironment
@@ -28,17 +27,15 @@ def main():
             if f != '.gitkeep':
                 os.unlink(os.path.join(root, f))
 
-    args = parser.parse_args()
-            
-    save_params(args)
+    args = parse_args()
 
-    set_should_print(args.should_print)
-    show_running_info(vars(args))
+    set_should_print(args['should_print'])
+    show_running_info(args)
     
-    environment = args.environment
-    technique = args.technique
+    environment = args['environment']
+    technique = args['technique']
 
-    deep = args.deep
+    deep = args['deep']
     if technique == 'viper':
         deep = True
 
@@ -63,7 +60,7 @@ def main():
         # testing with 1mil -> two peaks at 90 in eval but still not stable
         learning_rate = 0.01
         discount_factor = 1
-    num_episodes = args.num_episodes
+    num_episodes = args['num_episodes']
     initial_epsilon = 1.0
     epsilon_decay = initial_epsilon / (num_episodes / 2)
     final_epsilon = 0.1

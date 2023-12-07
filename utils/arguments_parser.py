@@ -6,6 +6,8 @@ import json
 parser = argparse.ArgumentParser(
     description='Test XRL techniques on different environments.')
 
+# Defining command line arguments
+
 parser.add_argument('-t', '--technique', dest='technique', type=str, help='The XRL technique to be tested.', 
     default='hvalues', choices=['hvalues', 'viper'])
 parser.add_argument('-e', '--environment', dest='environment', type=str, 
@@ -23,6 +25,8 @@ parser.add_argument('-f', '--file', dest='file_path',
 #     help='Enable deep learning if available for chosen technique and environment.')
 parser.add_argument('--noprint', dest='should_print', action='store_false', help='Disable log printing.')
 
+# Defining defaults for some arguments
+
 parser.set_defaults(should_print=True)
 parser.set_defaults(deep=False)
 
@@ -39,10 +43,37 @@ def parse_args() -> dict:
         print(f"Loading program parameters from file: {file_path}")
         with open(file_path, 'r') as f:
             parsing_result = dict(json.load(f))
-
-        print("parsing_result: ", parsing_result)
+        parsing_result = add_missing_params(parsing_result)
     else:
         # maintain original argparse.Namespace object
         # but convert it to a dictionary
         parsing_result = vars(parsing_result)
+        # also save params passed
+        save_params(parsing_result)
     return parsing_result
+
+def save_params(arg_dictionary: dict) -> None:
+    """Saves the parameters used in the experiment to JSON file. Used only for logging purposes if
+    user did not pass the -f option."""
+    save_file = "results/params.json"
+    with open(save_file, 'w') as f:
+        json.dump(arg_dictionary, f, indent=4)
+
+def add_missing_params(arg_dictionary: dict) -> dict:
+    """Adds missing parameters to the dictionary. Used to avoid errors when accessing
+    parameters that were not passed by the user. Returns the original dictionary with the added
+    parameters."""
+    dict_copy = arg_dictionary.copy()
+    missing_params = {
+        'technique': 'hvalues',
+        'environment': 'blackjack',
+        'num_episodes': 100_000,
+        'load_path': None,
+        'file_path': None,
+        'should_print': True,
+        'deep': False
+    }
+    for param in missing_params:
+        if param not in arg_dictionary:
+            dict_copy[param] = missing_params[param]
+    return dict_copy
