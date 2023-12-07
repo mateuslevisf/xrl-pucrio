@@ -47,3 +47,19 @@ class TestArgumentsParser(unittest.TestCase):
         path = utils.arguments_parser.save_params(parsed_args)
         assert os.path.exists(path)
         os.remove(path)
+
+    def test_add_missing_params_to_empty_dict(self):
+        """Test adding missing parameters to an empty dictionary."""
+        missing_params = {
+            'technique': 'hvalues',
+            'environment': 'blackjack',
+            'num_episodes': 100_000,
+            'load_path': None,
+            'file_path': None,
+            'should_print': True,
+            'deep': False,
+            'agent': {}
+        }
+        parsed_args = {}
+        parsed_args = utils.arguments_parser.add_missing_params(parsed_args)
+        self.assertEqual(parsed_args, missing_params)
