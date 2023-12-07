@@ -1,5 +1,16 @@
 # xrl-pucrio
 
+## Introduction
+
+The goal of this project is to serve as both a basic introduction to the explainable reinforcement learning (XRL)
+world and a sandbox for other XRL students/researchers to try out running XRL techniques with as little pre-running work
+as possible. This was done through the implementation of two different XRL techniques (Belief Maps and VIPER) in a single codebase 
+with non-technique-specific functions and classes being as generic as possible.
+
+More information can be found in the repo wiki.
+
+## Commands
+
 Creating environment from environment.yml file:
 ```
 conda env create -f conda_env.yml
