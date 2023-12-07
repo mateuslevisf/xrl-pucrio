@@ -10,12 +10,17 @@ To activate resulting environment:
 conda activate xrlpucrio
 ```
 
-To run:
+To run with default configuration:
 ```
 python xrlpucrio.py
 ```
 
 The -h option can be added to the above command line in order to get more info about running options.
+
+To run tests:
+```
+python -m unittest discover -v
+```
 
 ## References
 
