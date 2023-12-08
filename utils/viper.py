@@ -1,3 +1,4 @@
+"""File holding almost all code related to VIPER technique. Adapted from the original obastani/viper repository in GitHub."""
 import numpy as np
 from tqdm import tqdm
 
