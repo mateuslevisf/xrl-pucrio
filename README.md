@@ -4,9 +4,13 @@
 
 The goal of this project is to serve as both a basic introduction to the explainable reinforcement learning (XRL)
 world and a sandbox for other XRL students/researchers to try out running XRL techniques with as little pre-running work
-as possible. This was done through the implementation of two different XRL techniques (Belief Maps and VIPER) in a single codebase with non-technique-specific functions and classes being as generic as possible.
+as possible. 
 
-More information can be found in the repo wiki.
+This was done through the implementation of two different XRL techniques (Belief Maps and VIPER) in a single codebase with non-technique-specific functions and classes being as generic as possible. 
+
+More information about contents, running instructions and project structure/architecture can be found in the repo wiki.
+
+Repository created for the INF2102 discipline in the PUC-Rio Informatics MSci program. 
 
 ## Commands
 
