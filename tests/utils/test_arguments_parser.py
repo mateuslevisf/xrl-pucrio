@@ -34,7 +34,13 @@ class TestArgumentsParser(unittest.TestCase):
         self.assertEqual(parsed_args['environment'], 'blackjack')
         self.assertEqual(parsed_args['num_episodes'], 100000)
         self.assertEqual(parsed_args['should_print'], True)
-        self.assertEqual(parsed_args['agent'], {})
+        self.assertEqual(parsed_args['agent'], {
+            'initial_epsilon': 1,
+            'final_epsilon': 0.01,
+            'learning_rate': 0.01,
+            'discount_factor': 1,
+            'hidden_dim': 64
+        })
 
     def test_parse_file_args_missing_env(self):
         """Test parsing arguments from a JSON input file that is missing the environment params (only has env params)."""
@@ -63,7 +69,13 @@ class TestArgumentsParser(unittest.TestCase):
             'file_path': None,
             'should_print': True,
             'deep': False,
-            'agent': {}
+            'agent': {
+                'initial_epsilon': 1,
+                'final_epsilon': 0.01,
+                'learning_rate': 0.01,
+                'discount_factor': 1,
+                'hidden_dim': 64
+            }
         }
         parsed_args = {}
         parsed_args = utils.arguments_parser.add_missing_params(parsed_args)
