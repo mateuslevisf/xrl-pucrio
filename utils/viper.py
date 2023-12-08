@@ -1,5 +1,5 @@
 import numpy as np
-from collections import namedtuple
+from tqdm import tqdm
 
 from environments.env_instance import EnvironmentInstance
 from agents.agent import Agent
@@ -7,8 +7,6 @@ from agents.q_agent import QAgent
 from agents.decision_tree import DTPolicy
 from utils.memory import Transition
 from utils.log import log
-
-from tqdm import tqdm
 
 def get_rollout(env: EnvironmentInstance, agent: Agent) -> list[Transition]: 
     """ 

@@ -36,8 +36,11 @@ def main():
     technique = args['technique']
 
     deep = args['deep']
-    if technique == 'viper':
+    if technique == 'viper' and not deep:
+        log("You are running the VIPER technique, so the agent will use a DQN. The VIPER technique is not implemented for Q-Learning agents.")
         deep = True
+    if deep and technique != 'viper':
+        log("You are running the Belief Map technique with a DQN, but this is not fully implemented. The agent will be trained but will not generate any Belief Map plots, just evaluation results.")
 
     if environment == 'blackjack':
         env = BlackjackEnvironment(sab=True, technique=technique, deep=deep)

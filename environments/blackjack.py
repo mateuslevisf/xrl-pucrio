@@ -30,8 +30,8 @@ class BlackjackEnvironment(EnvironmentInstance):
         if not deep:
             q_data = agent.q_values
             h_data = agent.h_values
-        else:
-            q_data = agent.generate_q_table(self._instance)
+        # else:
+        #    q_data = agent.generate_q_table(self._instance)
 
         if q_data is not None:
             table_cmap = sns.diverging_palette(10, 240, n=128)

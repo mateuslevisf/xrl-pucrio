@@ -41,8 +41,8 @@ class CartpoleEnvironment(EnvironmentInstance):
         if not deep:
             q_data = agent.q_values
             h_data = agent.h_values
-        else:
-            q_data = agent.generate_q_table(self._instance)
+        # else:
+        #     q_data = agent.generate_q_table(self._instance)
 
         if q_data is not None:
             plot_table_cartpole(q_data, title="Q-Values")

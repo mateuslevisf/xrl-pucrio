@@ -1,7 +1,7 @@
 import gymnasium as gym
 from tqdm import tqdm
+
 from utils.plots import line_plot
-import numpy as np
 
 class EnvironmentInstance:
     def __init__(self, name, deep=False, technique="", **kwargs):
