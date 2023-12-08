@@ -70,6 +70,7 @@ def test_student(env, student, n_test_rollouts):
     return cum_rew / n_test_rollouts
 
 def get_best_student(env, students_and_rewards, n_tests = 100):
+    log("Getting best student from VIPER...")
     while len(students_and_rewards) > 1:
         sorted_students = sorted(students_and_rewards, key=lambda x: x[1], reverse=True)
 
